@@ -22,3 +22,11 @@
 - Conexión establecida entre Backend (Java) y Base de Datos.
 - Entidad 'Cliente' creada con los mismos nombres de columna que en BBDD.
 - Comprobado que la aplicación modifica la tabla automáticamente al arrancar.
+
+## [03-02-2026] - Capa de Acceso a Datos (Repository)
+
+### Avances
+- Creado paquete `repository`.
+- Implementada interfaz `ClienteRepository` que extiende de `JpaRepository`.
+- Verificado que el tipo de dato de la PK en BBDD (`bigint`) coincide con Java (`Long`).
+- Comprobado que la aplicación arranca e inyecta el repositorio correctamente.
