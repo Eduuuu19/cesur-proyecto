@@ -30,3 +30,14 @@
 - Implementada interfaz `ClienteRepository` que extiende de `JpaRepository`.
 - Verificado que el tipo de dato de la PK en BBDD (`bigint`) coincide con Java (`Long`).
 - Comprobado que la aplicación arranca e inyecta el repositorio correctamente.
+
+## [06-02-2026] - CRUD Completo de Clientes
+
+### Avances
+- [x] Implementado método `addCliente` (POST) para ver fichas individuales.
+- [x] Implementado método `getClientes` (GET) para ver fichas de todos los registros.
+- [x] Implementado método `getClienteById` (GET) para ver fichas individuales.
+- [x] Implementado método `deleteCliente` (DELETE) para eliminar registros.
+- [x] Implementado método `updateCliente` (PUT) para modificar datos existentes.
+- [x] **Pruebas:** Verificado el ciclo completo (Crear -> Leer -> Editar -> Borrar) usando Browser y Terminal (Curl).
+- [x] Documentación de la API actualizada con los nuevos endpoints.

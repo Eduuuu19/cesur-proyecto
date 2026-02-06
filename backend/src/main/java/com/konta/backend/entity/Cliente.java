@@ -8,11 +8,11 @@ import lombok.Data;
 @Table(name = "clientes")
 public class Cliente {
 
-    @Id // Esto le dice a Java: "Esta es la Clave Primaria"
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Esto dice: "Es autoincremental (1, 2, 3...)"
-    private Long id_cliente; // ¡Exactamente igual que en DBeaver!
+    @Id // se define clava primaria
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // se define como autoincremental
+    private Long id_cliente; //
 
-    private Long id_usuario; // ¡Exactamente igual que en DBeaver!
+    private Long id_usuario; //
 
     private String nombre;
 
