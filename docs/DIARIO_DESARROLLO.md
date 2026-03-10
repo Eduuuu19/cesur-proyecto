@@ -34,10 +34,18 @@
 ## [06-02-2026] - CRUD Completo de Clientes
 
 ### Avances
-- [x] Implementado método `addCliente` (POST) para ver fichas individuales.
-- [x] Implementado método `getClientes` (GET) para ver fichas de todos los registros.
-- [x] Implementado método `getClienteById` (GET) para ver fichas individuales.
-- [x] Implementado método `deleteCliente` (DELETE) para eliminar registros.
-- [x] Implementado método `updateCliente` (PUT) para modificar datos existentes.
-- [x] **Pruebas:** Verificado el ciclo completo (Crear -> Leer -> Editar -> Borrar) usando Browser y Terminal (Curl).
-- [x] Documentación de la API actualizada con los nuevos endpoints.
+- Implementado método `addCliente` (POST) para ver fichas individuales.
+- Implementado método `getClientes` (GET) para ver fichas de todos los registros.
+- Implementado método `getClienteById` (GET) para ver fichas individuales.
+- Implementado método `deleteCliente` (DELETE) para eliminar registros.
+- Implementado método `updateCliente` (PUT) para modificar datos existentes.
+- Pruebas: Verificado el ciclo completo (Crear -> Leer -> Editar -> Borrar) usando Browser y Terminal (Curl).
+- Documentación de la API actualizada con los nuevos endpoints.
+
+## [10-03-2026] - Módulo de Maestros: Proveedores
+### Avances
+- Creación de la Entidad `Proveedor` basada en el diccionario de datos.
+- Creación del `ProveedorRepository` para la persistencia con JPA/Hibernate.
+- Implementación de la capa de lógica de negocio en `ProveedorService`.
+- Desarrollo del `ProveedorController` con los 5 endpoints del CRUD (`GET`, `POST`, `PUT`, `DELETE`).
+- Pruebas de funcionamiento superadas (creación e inserción en MySQL comprobada vía terminal y navegador).
