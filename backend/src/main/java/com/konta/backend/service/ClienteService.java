@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service // Esto significa que es el servicio
+@Service
 public class ClienteService {
 
-    @Autowired // crea instancia en memoria y la devuelve a este servicio
+    @Autowired //
     private ClienteRepository clienteRepository;
 
     // --- MÉTODOS ---
@@ -37,10 +37,8 @@ public class ClienteService {
 
     // Actualizar un cliente
     public Cliente updateCliente(Long id, Cliente clienteDetalles){
-        // Primero buscamos si existe el cliente
         Cliente clienteExistente = clienteRepository.findById(id).orElse(null);
 
-        // Si existe, le actualizamos los datos
         if (clienteExistente != null) {
             clienteExistente.setNombre(clienteDetalles.getNombre());
             clienteExistente.setNif(clienteDetalles.getNif());
@@ -49,7 +47,6 @@ public class ClienteService {
             clienteExistente.setTelefono(clienteDetalles.getTelefono());
             clienteExistente.setEstado(clienteDetalles.getEstado());
 
-            // Guardamos los cambios en la base de datos
             return clienteRepository.save(clienteExistente);
         }
 
