@@ -42,10 +42,19 @@
 - Pruebas: Verificado el ciclo completo (Crear -> Leer -> Editar -> Borrar) usando Browser y Terminal (Curl).
 - Documentación de la API actualizada con los nuevos endpoints.
 
-## [10-03-2026] - Módulo de Maestros: Proveedores
+## [10-03-2026] - CRUD Completo de Proveedores
 ### Avances
 - Creación de la Entidad `Proveedor` basada en el diccionario de datos.
 - Creación del `ProveedorRepository` para la persistencia con JPA/Hibernate.
 - Implementación de la capa de lógica de negocio en `ProveedorService`.
 - Desarrollo del `ProveedorController` con los 5 endpoints del CRUD (`GET`, `POST`, `PUT`, `DELETE`).
 - Pruebas de funcionamiento superadas (creación e inserción en MySQL comprobada vía terminal y navegador).
+
+## [11-03-2026] - CRUD Completo del módulo de ingresos y gastos.
+
+### Avances
+- Configuración de `application.properties` (update/create) para sincronizar base de datos.
+- Implementado CRUD completo para `Presupuesto` con relación `@ManyToOne` hacia `Cliente`.
+- Implementado CRUD completo para `FacturaEmitida` con relación `@ManyToOne` hacia `Cliente`.
+- Implementado CRUD completo para `FacturaRecibida` con relación `@ManyToOne` hacia `Proveedor`.
+- Pruebas de integración superadas validando la inserción de datos anidados (JSON) mediante API REST.
