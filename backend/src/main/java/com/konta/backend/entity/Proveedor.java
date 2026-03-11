@@ -8,24 +8,42 @@ public class Proveedor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_proveedor;
+
+    @Column(name = "id_proveedor")
+    private Long idProveedor;
+
+    @Column(name = "id_usuario")
+    private Long idUsuario;
+
     private String nombre;
+
     private String nif;
+
     private String direccion;
+
     private String email;
+
     private String telefono;
+
     private String estado;
-    private Long id_usuario;
 
     public Proveedor() {
     }
 
-    public Long getId_proveedor() {
-        return id_proveedor;
+    public Long getIdProveedor() {
+        return idProveedor;
     }
 
-    public void setId_proveedor(Long id_proveedor) {
-        this.id_proveedor = id_proveedor;
+    public void setIdProveedor(Long idProveedor) {
+        this.idProveedor = idProveedor;
+    }
+
+    public Long getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNombre() {
@@ -76,11 +94,4 @@ public class Proveedor {
         this.estado = estado;
     }
 
-    public Long getId_usuario() {
-        return id_usuario;
-    }
-
-    public void setId_usuario(Long id_usuario) {
-        this.id_usuario = id_usuario;
-    }
 }
