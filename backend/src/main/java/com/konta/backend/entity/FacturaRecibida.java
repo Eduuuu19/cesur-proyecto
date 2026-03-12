@@ -1,6 +1,11 @@
 package com.konta.backend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
+
 import java.time.LocalDate;
 
 @Entity
@@ -19,18 +24,26 @@ public class FacturaRecibida {
     @Column(name = "id_usuario")
     private Long idUsuario;
 
-    @Column(name = "numero_factura")
+    @NotBlank(message = "El número de factura no puede estar vacío")
+    @Column(name = "numero_factura", unique = true)
     private String numeroFactura;
 
+    @NotNull(message = "La fecha no puede estar vacía")
     private LocalDate fecha;
 
+    @NotNull(message = "La base imponible no puede estar vacía")
+    @Positive(message = "La base imponible debe ser mayor que cero")
     @Column(name = "base_imponible")
     private Double baseImponible;
 
+    @NotNull(message = "El IVA no puede estar vacío")
+    @Positive(message = "El IVA debe ser mayor que cero")
     private Double iva;
 
     private Double total;
 
+    @NotBlank(message = "El estado de la factura es obligatorio")
+    @Pattern(regexp = "^(Pagada|Pendiente|Vencida)$", message = "El estado solo puede ser: Pagada, Pendiente o Vencida")
     private String estado;
 
     public FacturaRecibida() {

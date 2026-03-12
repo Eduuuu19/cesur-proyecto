@@ -18,6 +18,8 @@ public class PresupuestoService {
     }
 
     public Presupuesto addPresupuesto(Presupuesto presupuesto) {
+        Double totalPresupuesto = calcularTotalPresupuesto(presupuesto.getBaseImponible(), presupuesto.getIva());
+        presupuesto.setTotal(totalPresupuesto);
         return presupuestoRepository.save(presupuesto);
     }
 
@@ -37,13 +39,19 @@ public class PresupuestoService {
             presupuestoExistente.setFecha(presupuestoDetalles.getFecha());
             presupuestoExistente.setBaseImponible(presupuestoDetalles.getBaseImponible());
             presupuestoExistente.setIva(presupuestoDetalles.getIva());
-            presupuestoExistente.setTotal(presupuestoDetalles.getTotal());
+
+            Double totalPresupuesto = calcularTotalPresupuesto(presupuestoDetalles.getBaseImponible(), presupuestoDetalles.getIva());
+            presupuestoExistente.setTotal(totalPresupuesto);
+
             presupuestoExistente.setEstado(presupuestoDetalles.getEstado());
-
             presupuestoExistente.setCliente(presupuestoDetalles.getCliente());
-
             return presupuestoRepository.save(presupuestoExistente);
         }
         return null;
+    }
+
+    // Realizo el cálculo del total del presupuesto a partir de la base imponible y el IVA introducido por el usuario
+    public Double calcularTotalPresupuesto(Double baseImponible, Double iva){
+        return baseImponible + (baseImponible * (iva / 100));
     }
 }

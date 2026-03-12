@@ -2,6 +2,7 @@ package com.konta.backend.controller;
 
 import com.konta.backend.entity.FacturaEmitida;
 import com.konta.backend.service.FacturaEmitidaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class FacturaEmitidaController {
     }
 
     @PostMapping
-    public FacturaEmitida addFacturaEmitida(@RequestBody FacturaEmitida factura) {
+    public FacturaEmitida addFacturaEmitida(@Valid @RequestBody FacturaEmitida factura) {
         return facturaEmitidaService.addFacturaEmitida(factura);
     }
 
@@ -30,7 +31,7 @@ public class FacturaEmitidaController {
     }
 
     @PutMapping("/{id}")
-    public FacturaEmitida updateFacturaEmitida(@PathVariable Long id, @RequestBody FacturaEmitida factura) {
+    public FacturaEmitida updateFacturaEmitida(@PathVariable Long id, @Valid @RequestBody FacturaEmitida factura) {
         return facturaEmitidaService.updateFacturaEmitida(id, factura);
     }
 

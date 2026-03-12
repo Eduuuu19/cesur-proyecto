@@ -1,6 +1,10 @@
 package com.konta.backend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
 
@@ -17,20 +21,29 @@ public class Presupuesto {
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-    private Long id_usuario;
+    @Column(name = "id_usuario")
+    private Long idUsuario;
 
-    @Column(name = "numero_presupuesto")
+    @NotBlank(message = "El número de presupuesto no puede estar vacío")
+    @Column(name = "numero_presupuesto", unique = true)
     private String numeroPresupuesto;
 
+    @NotNull(message = "La fecha no puede estar vacía")
     private LocalDate fecha;
 
+    @NotNull(message = "La base imponible no puede estar vacía")
+    @Positive(message = "La base imponible debe ser mayor que cero")
     @Column(name = "base_imponible")
     private Double baseImponible;
 
+    @NotNull(message = "El IVA imponible no puede estar vacío")
+    @Positive(message = "El IVA debe ser mayor que cero")
     private Double iva;
 
     private Double total;
 
+    @NotBlank(message = "El estado del presupuesto es obligatorio")
+    @Pattern(regexp = "^(Aceptado|Pendiente|Rechazado)$", message = "El estado solo puede ser: Aceptado, Pendiente o Rechazado")
     private String estado;
 
     public Presupuesto() {
@@ -52,12 +65,12 @@ public class Presupuesto {
         this.cliente = cliente;
     }
 
-    public Long getId_usuario() {
-        return id_usuario;
+    public Long getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId_usuario(Long id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNumeroPresupuesto() {

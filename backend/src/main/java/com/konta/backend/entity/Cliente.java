@@ -1,6 +1,9 @@
 package com.konta.backend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "clientes")
@@ -14,16 +17,22 @@ public class Cliente {
     @Column(name = "id_usuario")
     private Long idUsuario;
 
+    @NotBlank(message = "El nombre del cliente no puede estar vacío")
     private String nombre;
 
+    @NotBlank(message = "El NIF del cliente no puede estar vacío")
     private String nif;
 
+    @NotBlank(message = "La dirección del cliente no puede estar vacía")
     private String direccion;
 
+    @Email(message = "El formato del email no es válido")
     private String email;
 
     private String telefono;
 
+    @NotBlank(message = "El estado del cliente es obligatorio")
+    @Pattern(regexp = "^(Activo|Inactivo)$", message = "El estado solo puede ser: Activo o Inactivo")
     private String estado;
 
     public Cliente() {

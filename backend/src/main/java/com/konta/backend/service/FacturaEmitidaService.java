@@ -18,6 +18,8 @@ public class FacturaEmitidaService {
     }
 
     public FacturaEmitida addFacturaEmitida(FacturaEmitida factura) {
+        Double totalFactura = calcularTotalFactura(factura.getBaseImponible(), factura.getIva());
+        factura.setTotal(totalFactura);
         return facturaEmitidaRepository.save(factura);
     }
 
@@ -38,11 +40,19 @@ public class FacturaEmitidaService {
             facturaExistente.setFecha(facturaDetalles.getFecha());
             facturaExistente.setBaseImponible(facturaDetalles.getBaseImponible());
             facturaExistente.setIva(facturaDetalles.getIva());
-            facturaExistente.setTotal(facturaDetalles.getTotal());
+
+            Double totalFactura = calcularTotalFactura(facturaDetalles.getBaseImponible(), facturaDetalles.getIva());
+            facturaExistente.setTotal(totalFactura);
+
             facturaExistente.setEstado(facturaDetalles.getEstado());
             facturaExistente.setCliente(facturaDetalles.getCliente());
             return facturaEmitidaRepository.save(facturaExistente);
         }
         return null;
+    }
+
+    // Realizo el cálculo del total de la factura a partir de la base imponible y el IVA introducido por el usuario
+    public Double calcularTotalFactura(Double baseImponible, Double iva){
+        return baseImponible + (baseImponible * (iva / 100));
     }
 }

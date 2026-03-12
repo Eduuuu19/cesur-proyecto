@@ -58,3 +58,13 @@
 - Implementado CRUD completo para `FacturaEmitida` con relación `@ManyToOne` hacia `Cliente`.
 - Implementado CRUD completo para `FacturaRecibida` con relación `@ManyToOne` hacia `Proveedor`.
 - Pruebas de integración superadas validando la inserción de datos anidados (JSON) mediante API REST.
+
+## [12-03-2026] - Control de Calidad, Validaciones y Lógica de Negocio
+
+### Avances
+- Instalada dependencia `spring-boot-starter-validation`.
+- Aplicadas reglas de validación en Entidades (`@NotBlank`, `@NotNull`, `@Positive`, `@Email`).
+- Implementada restricción de formato estricto (`@Pattern`) para los Estados en Maestros y Facturación.
+- Implementada restricción de unicidad (`unique = true`) para los números de presupuestos y facturas.
+- Creación de `GlobalExceptionHandler` (`@RestControllerAdvice`) para capturar errores de validación y devolver respuestas limpias (HTTP 400).
+- Refactorización de la lógica de negocio en los `Services`: los totales de presupuestos y facturas ahora se calculan automáticamente en el servidor a partir de la Base Imponible y el % de IVA aportados, aplicando el Principio DRY.

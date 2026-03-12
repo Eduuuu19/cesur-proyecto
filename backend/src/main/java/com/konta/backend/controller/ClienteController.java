@@ -1,6 +1,7 @@
 package com.konta.backend.controller;
 import com.konta.backend.entity.Cliente;
 import com.konta.backend.service.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public Cliente addCliente(@RequestBody Cliente cliente) {
+    public Cliente addCliente(@Valid @RequestBody Cliente cliente) {
         return clienteService.addCliente(cliente);
     }
 
@@ -36,7 +37,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public Cliente updateCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
+    public Cliente updateCliente(@PathVariable Long id, @Valid @RequestBody Cliente cliente) {
         return clienteService.updateCliente(id, cliente);
     }
 }

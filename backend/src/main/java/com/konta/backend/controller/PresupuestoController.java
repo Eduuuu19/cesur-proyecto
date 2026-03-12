@@ -2,6 +2,7 @@ package com.konta.backend.controller;
 
 import com.konta.backend.entity.Presupuesto;
 import com.konta.backend.service.PresupuestoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class PresupuestoController {
     }
 
     @PostMapping
-    public Presupuesto addPresupuesto(@RequestBody Presupuesto presupuesto) {
+    public Presupuesto addPresupuesto(@Valid @RequestBody Presupuesto presupuesto) {
         return presupuestoService.addPresupuesto(presupuesto);
     }
 
@@ -30,7 +31,7 @@ public class PresupuestoController {
     }
 
     @PutMapping("/{id}")
-    public Presupuesto updatePresupuesto(@PathVariable Long id, @RequestBody Presupuesto presupuesto) {
+    public Presupuesto updatePresupuesto(@PathVariable Long id, @Valid @RequestBody Presupuesto presupuesto) {
         return presupuestoService.updatePresupuesto(id, presupuesto);
     }
 

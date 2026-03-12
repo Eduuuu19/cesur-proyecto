@@ -2,6 +2,7 @@ package com.konta.backend.controller;
 
 import com.konta.backend.entity.Proveedor;
 import com.konta.backend.service.ProveedorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class ProveedorController {
     }
 
     @PostMapping
-    public Proveedor addProveedor(@RequestBody Proveedor proveedor) {
+    public Proveedor addProveedor( @Valid @RequestBody Proveedor proveedor) {
         return proveedorService.addProveedor(proveedor);
     }
 
@@ -32,7 +33,7 @@ public class ProveedorController {
     }
 
     @PutMapping("/{id}")
-    public Proveedor updateProveedor(@PathVariable Long id, @RequestBody Proveedor proveedor) {
+    public Proveedor updateProveedor(@PathVariable Long id, @Valid @RequestBody Proveedor proveedor) {
         return proveedorService.updateProveedor(id, proveedor);
     }
 
