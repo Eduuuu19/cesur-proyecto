@@ -3,6 +3,7 @@ package com.konta.backend.service;
 import com.konta.backend.entity.Presupuesto;
 import com.konta.backend.repository.PresupuestoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,18 +14,26 @@ public class PresupuestoService {
     @Autowired
     private PresupuestoRepository presupuestoRepository;
 
-    public List<Presupuesto> getPresupuestos() {
-        return presupuestoRepository.findAll();
+    public List<Presupuesto> getPresupuestos(Sort sort) {
+        return presupuestoRepository.findAll(sort);
     }
+
+    public List<Presupuesto> getPresupuestosPorEstado(String estado, Sort sort) {
+        return presupuestoRepository.findByEstado(estado, sort);
+    }
+
+    public List<Presupuesto> getPresupuestosPorNif(String nif, Sort sort) {
+        return presupuestoRepository.findByClienteNif(nif, sort);
+    }
+    public Presupuesto getPresupuestoById(Long id) {
+        return presupuestoRepository.findById(id).orElse(null);
+    }
+
 
     public Presupuesto addPresupuesto(Presupuesto presupuesto) {
         Double totalPresupuesto = calcularTotalPresupuesto(presupuesto.getBaseImponible(), presupuesto.getIva());
         presupuesto.setTotal(totalPresupuesto);
         return presupuestoRepository.save(presupuesto);
-    }
-
-    public Presupuesto getPresupuestoById(Long id) {
-        return presupuestoRepository.findById(id).orElse(null);
     }
 
     public void deletePresupuesto(Long id) {

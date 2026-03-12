@@ -4,6 +4,7 @@ import com.konta.backend.entity.FacturaRecibida;
 import com.konta.backend.service.FacturaRecibidaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +17,19 @@ public class FacturaRecibidaController {
     private FacturaRecibidaService facturaRecibidaService;
 
     @GetMapping
-    public List<FacturaRecibida> getFacturasRecibidas() {
-        return facturaRecibidaService.getFacturasRecibidas();
+    public List<FacturaRecibida> getFacturasRecibidas(
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) String nif,
+            Sort sort) {
+
+        if (estado != null) {
+            return facturaRecibidaService.getFacturasRecibidasByState(estado, sort);
+        }
+        if (nif != null) {
+            return facturaRecibidaService.getFacturasRecibidasByNif(nif, sort);
+        }
+
+        return facturaRecibidaService.getFacturasRecibidas(sort);
     }
 
     @PostMapping

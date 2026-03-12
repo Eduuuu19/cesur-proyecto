@@ -4,6 +4,7 @@ import com.konta.backend.entity.Presupuesto;
 import com.konta.backend.service.PresupuestoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +17,20 @@ public class PresupuestoController {
     private PresupuestoService presupuestoService;
 
     @GetMapping
-    public List<Presupuesto> getPresupuestos() {
-        return presupuestoService.getPresupuestos();
+    public List<Presupuesto> getPresupuestos(
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) String nif,
+            Sort sort) {
+
+        if (estado != null) {
+            return presupuestoService.getPresupuestosPorEstado(estado, sort);
+        }
+
+        if (nif != null) {
+            return presupuestoService.getPresupuestosPorNif(nif, sort);
+        }
+
+        return presupuestoService.getPresupuestos(sort);
     }
 
     @PostMapping

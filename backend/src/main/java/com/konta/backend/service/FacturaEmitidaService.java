@@ -3,6 +3,7 @@ package com.konta.backend.service;
 import com.konta.backend.entity.FacturaEmitida;
 import com.konta.backend.repository.FacturaEmitidaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +14,19 @@ public class FacturaEmitidaService {
     @Autowired
     private FacturaEmitidaRepository facturaEmitidaRepository;
 
-    public List<FacturaEmitida> getFacturasEmitidas() {
-        return facturaEmitidaRepository.findAll();
+    public List<FacturaEmitida> getFacturasEmitidas(Sort sort) {
+        return facturaEmitidaRepository.findAll(sort);
+    }
+
+    public FacturaEmitida getFacturaEmitidaById(Long id) {
+        return facturaEmitidaRepository.findById(id).orElse(null);
+    }
+
+    public List<FacturaEmitida> getFacturasEmitidasByState(String estado, Sort sort) {
+        return facturaEmitidaRepository.findByEstado(estado, sort);
+    }
+    public List<FacturaEmitida> getFacturasEmitidasByNif(String nif, Sort sort) {
+        return facturaEmitidaRepository.findByClienteNif(nif, sort);
     }
 
     public FacturaEmitida addFacturaEmitida(FacturaEmitida factura) {
@@ -23,11 +35,6 @@ public class FacturaEmitidaService {
         return facturaEmitidaRepository.save(factura);
     }
 
-    public FacturaEmitida getFacturaEmitidaById(Long id) {
-        return facturaEmitidaRepository.findById(id).orElse(null);
-    }
-
-    // D. BORRAR
     public void deleteFacturaEmitida(Long id) {
         facturaEmitidaRepository.deleteById(id);
     }

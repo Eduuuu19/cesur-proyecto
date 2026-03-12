@@ -1,0 +1,19 @@
+package com.konta.backend.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class CorsConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**") // Aplicar a todas nuestras rutas (clientes, facturas, etc.)
+                // Aquí ponemos los puertos típicos donde desarrollarás tu web (React, Angular, Vue)
+                .allowedOrigins("http://localhost:3000", "http://localhost:4200", "http://localhost:5173")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Permisos de acciones
+                .allowedHeaders("*") // Permitir envío de cualquier tipo de dato oculto (cabeceras)
+                .allowCredentials(true); // Permitir en un futuro envío de cookies o tokens de login
+    }
+}

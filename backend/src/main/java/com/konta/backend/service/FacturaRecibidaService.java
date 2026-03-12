@@ -3,6 +3,7 @@ package com.konta.backend.service;
 import com.konta.backend.entity.FacturaRecibida;
 import com.konta.backend.repository.FacturaRecibidaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,18 +14,25 @@ public class FacturaRecibidaService {
     @Autowired
     private FacturaRecibidaRepository facturaRecibidaRepository;
 
-    public List<FacturaRecibida> getFacturasRecibidas() {
-        return facturaRecibidaRepository.findAll();
+    public List<FacturaRecibida> getFacturasRecibidas(Sort sort) {
+        return facturaRecibidaRepository.findAll(sort);
+    }
+
+    public List<FacturaRecibida> getFacturasRecibidasByState(String estado, Sort sort) {
+        return facturaRecibidaRepository.findByEstado(estado, sort);
+    }
+
+    public List<FacturaRecibida> getFacturasRecibidasByNif(String nif, Sort sort) {
+        return facturaRecibidaRepository.findByProveedorNif(nif, sort);
+    }
+    public FacturaRecibida getFacturaRecibidaById(Long id) {
+        return facturaRecibidaRepository.findById(id).orElse(null);
     }
 
     public FacturaRecibida addFacturaRecibida(FacturaRecibida factura) {
         Double totalFactura = calcularTotalFactura(factura.getBaseImponible(), factura.getIva());
         factura.setTotal(totalFactura);
         return facturaRecibidaRepository.save(factura);
-    }
-
-    public FacturaRecibida getFacturaRecibidaById(Long id) {
-        return facturaRecibidaRepository.findById(id).orElse(null);
     }
 
     public void deleteFacturaRecibida(Long id) {

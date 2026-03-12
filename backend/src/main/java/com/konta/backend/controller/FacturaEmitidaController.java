@@ -4,6 +4,8 @@ import com.konta.backend.entity.FacturaEmitida;
 import com.konta.backend.service.FacturaEmitidaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +18,19 @@ public class FacturaEmitidaController {
     private FacturaEmitidaService facturaEmitidaService;
 
     @GetMapping
-    public List<FacturaEmitida> getFacturasEmitidas() {
-        return facturaEmitidaService.getFacturasEmitidas();
+    public List<FacturaEmitida> getFacturasEmitidas(
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) String nif,
+            Sort sort) {
+
+        if (estado != null) {
+            return facturaEmitidaService.getFacturasEmitidasByState(estado);
+        }
+        if (nif != null) {
+            return facturaEmitidaService.getFacturasEmitidasByNif(nif);
+        }
+
+        return facturaEmitidaService.getFacturasEmitidas(sort);
     }
 
     @PostMapping

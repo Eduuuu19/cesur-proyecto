@@ -60,7 +60,13 @@
 - Pruebas de integración superadas validando la inserción de datos anidados (JSON) mediante API REST.
 
 ## [12-03-2026] - Control de Calidad, Validaciones y Lógica de Negocio
-
+### Problemas encontrados
+1. **Mensajes de validación ocultos**: Al probar una petición incorrecta, Spring Boot bloqueaba el JSON pero devolvía un Error 400 genérico, ocultando los mensajes personalizados
+   - Solución: Implementación de una clase global con @RestControllerAdvice para capturar la excepción MethodArgumentNotValidException y extraer los mensajes en un formato JSON limpio.
+2. **Excepciones de integridad en la base de datos no controladas**: Al intentar insertar facturas con un número duplicado o al intentar borrar clientes con facturas asociadas, la base de datos bloqueaba la acción y el servidor devolvía un Error 500 incomprensible.
+   - Ampliación del GlobalExceptionHandler para atrapar DataIntegrityViolationException. Se implementó lógica para leer la causa específica del error de MySQL y devolver un código HTTP 409 (Conflict) con un mensaje amigable.
+3. **Hibernate no aplicaba nuevas restricciones estructurales**: Al añadir la regla '@Column(unique = true)' a un campo que ya existía en la base de datos, la configuración ddl-auto=update la ignoraba para no romper datos existentes.
+   - Solución: Borrado manual de las tablas ('DROP TABLE') mediante script SQL en DBeaver para forzar a Spring Boot a reconstruir el esquema desde cero aplicando los candados de seguridad.
 ### Avances
 - Instalada dependencia `spring-boot-starter-validation`.
 - Aplicadas reglas de validación en Entidades (`@NotBlank`, `@NotNull`, `@Positive`, `@Email`).
@@ -68,3 +74,6 @@
 - Implementada restricción de unicidad (`unique = true`) para los números de presupuestos y facturas.
 - Creación de `GlobalExceptionHandler` (`@RestControllerAdvice`) para capturar errores de validación y devolver respuestas limpias (HTTP 400).
 - Refactorización de la lógica de negocio en los `Services`: los totales de presupuestos y facturas ahora se calculan automáticamente en el servidor a partir de la Base Imponible y el % de IVA aportados, aplicando el Principio DRY.
+- Configuración de políticas CORS globales mediante la clase CorsConfig (implementando WebMvcConfigurer) para permitir el futuro consumo de la API desde aplicaciones Frontend. 
+- Creación de consultas personalizadas (Derived Queries) en los Repositories para permitir la búsqueda y filtrado por estado y por NIF (findByEstado, findByClienteNif y findByProveedorNif). 
+- Integración de la interfaz Sort de Spring Data en Controladores, Servicios y Repositorios para habilitar la ordenación dinámica de datos (ascendente y descendente) directamente desde la URL.
