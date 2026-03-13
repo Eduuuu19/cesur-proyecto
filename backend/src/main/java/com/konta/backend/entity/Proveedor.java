@@ -15,8 +15,9 @@ public class Proveedor {
     @Column(name = "id_proveedor")
     private Long idProveedor;
 
-    @Column(name = "id_usuario")
-    private Long idUsuario;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
 
     @NotBlank(message = "El nombre del proveedor no puede estar vacío")
     private String nombre;
@@ -47,13 +48,9 @@ public class Proveedor {
         this.idProveedor = idProveedor;
     }
 
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
+    public Usuario getUsuario() {return usuario;}
 
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
+    public void setUsuario(Usuario usuario) {this.usuario = usuario;}
 
     public String getNombre() {
         return nombre;

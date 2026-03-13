@@ -51,7 +51,6 @@
 - Pruebas de funcionamiento superadas (creación e inserción en MySQL comprobada vía terminal y navegador).
 
 ## [11-03-2026] - CRUD Completo del módulo de ingresos y gastos.
-
 ### Avances
 - Configuración de `application.properties` (update/create) para sincronizar base de datos.
 - Implementado CRUD completo para `Presupuesto` con relación `@ManyToOne` hacia `Cliente`.
@@ -77,3 +76,10 @@
 - Configuración de políticas CORS globales mediante la clase CorsConfig (implementando WebMvcConfigurer) para permitir el futuro consumo de la API desde aplicaciones Frontend. 
 - Creación de consultas personalizadas (Derived Queries) en los Repositories para permitir la búsqueda y filtrado por estado y por NIF (findByEstado, findByClienteNif y findByProveedorNif). 
 - Integración de la interfaz Sort de Spring Data en Controladores, Servicios y Repositorios para habilitar la ordenación dinámica de datos (ascendente y descendente) directamente desde la URL.
+
+## [13-03-2026] - Implementación del Modelo de Usuarios y Relaciones de Propiedad
+### Avances
+- Creación de la entidad principal `Usuario` reflejando estrictamente los atributos definidos en el Diccionario de Datos del proyecto (`id_usuario`, `nombreUsuario`, `email`, `telefono`, `password`, `avatar` y `rol`).
+- Creación de `UsuarioRepository` implementando el uso de la clase `Optional` de Java (`findByEmail`) para prevenir errores de tipo `NullPointerException` durante el futuro proceso de autenticación de credenciales.
+- Refactorización estructural del modelo de datos para cumplir con el Modelo de Relaciones y Cardinalidad: Implementación de la relación `@ManyToOne` en las entidades `Cliente`, `Proveedor`, `Presupuesto`, `FacturaEmitida` y `FacturaRecibida`.
+- Enlace efectivo de todas las tablas de Maestros, Ingresos y Gastos con la tabla `usuarios` mediante la restricción de clave foránea `id_usuario`, garantizando que ninguna operación económica quede huérfana en el sistema.

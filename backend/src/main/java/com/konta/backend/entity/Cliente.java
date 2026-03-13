@@ -14,8 +14,9 @@ public class Cliente {
     @Column(name = "id_cliente")
     private Long idCliente;
 
-    @Column(name = "id_usuario")
-    private Long idUsuario;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
 
     @NotBlank(message = "El nombre del cliente no puede estar vacío")
     private String nombre;
@@ -46,13 +47,9 @@ public class Cliente {
         this.idCliente = idCliente;
     }
 
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
+    public Usuario getUsuario() {return usuario;}
 
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
+    public void setUsuario(Usuario usuario) {this.usuario = usuario;}
 
     public String getNombre() {
         return nombre;

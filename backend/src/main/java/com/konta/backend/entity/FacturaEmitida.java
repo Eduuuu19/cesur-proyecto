@@ -21,8 +21,9 @@ public class FacturaEmitida {
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-    @Column(name = "id_usuario")
-    private Long idUsuario;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
 
     @NotBlank(message = "El número de factura no puede estar vacío")
     @Column(name = "numero_factura", unique = true)
@@ -65,13 +66,9 @@ public class FacturaEmitida {
         this.cliente = cliente;
     }
 
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
+    public Usuario getUsuario() {return usuario;}
 
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
+    public void setUsuario(Usuario usuario) {this.usuario = usuario;}
 
     public String getNumeroFactura() {
         return numeroFactura;

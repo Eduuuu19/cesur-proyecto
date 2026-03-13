@@ -24,10 +24,10 @@ public class FacturaEmitidaController {
             Sort sort) {
 
         if (estado != null) {
-            return facturaEmitidaService.getFacturasEmitidasByState(estado);
+            return facturaEmitidaService.getFacturasEmitidasByState(estado, sort);
         }
         if (nif != null) {
-            return facturaEmitidaService.getFacturasEmitidasByNif(nif);
+            return facturaEmitidaService.getFacturasEmitidasByNif(nif, sort);
         }
 
         return facturaEmitidaService.getFacturasEmitidas(sort);

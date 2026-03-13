@@ -9,5 +9,4 @@ public class KontaBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(KontaBackendApplication.class, args);
 	}
-
 }

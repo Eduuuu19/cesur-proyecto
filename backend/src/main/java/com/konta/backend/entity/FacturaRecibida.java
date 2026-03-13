@@ -21,8 +21,9 @@ public class FacturaRecibida {
     @JoinColumn(name = "id_proveedor")
     private Proveedor proveedor;
 
-    @Column(name = "id_usuario")
-    private Long idUsuario;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
 
     @NotBlank(message = "El número de factura no puede estar vacío")
     @Column(name = "numero_factura", unique = true)
@@ -113,11 +114,7 @@ public class FacturaRecibida {
         this.proveedor = proveedor;
     }
 
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
+    public Usuario getUsuario() {return usuario;}
 
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
+    public void setUsuario(Usuario usuario) {this.usuario = usuario;}
 }
