@@ -9,7 +9,9 @@ import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "facturas_recibidas")
+@Table(name = "facturas_recibidas", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"numero_factura", "id_usuario"})
+})
 public class FacturaRecibida {
 
     @Id
@@ -26,7 +28,7 @@ public class FacturaRecibida {
     private Usuario usuario;
 
     @NotBlank(message = "El número de factura no puede estar vacío")
-    @Column(name = "numero_factura", unique = true)
+    @Column(name = "numero_factura")
     private String numeroFactura;
 
     @NotNull(message = "La fecha no puede estar vacía")

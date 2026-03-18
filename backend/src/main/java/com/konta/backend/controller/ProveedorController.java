@@ -15,15 +15,26 @@ public class ProveedorController {
     @Autowired
     private ProveedorService proveedorService;
 
-    // --- (ENDPOINTS) ---
+    // --- ENDPOINTS ---
 
     @GetMapping
-    public List<Proveedor> getProveedores() {
+    public List<Proveedor> getProveedores(
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) String nombre) {
+
+        if (estado != null) {
+            return proveedorService.getProveedorByState(estado);
+        }
+
+        if (nombre != null) {
+            return proveedorService.getProveedorByName(nombre);
+        }
+
         return proveedorService.getProveedores();
     }
 
     @PostMapping
-    public Proveedor addProveedor( @Valid @RequestBody Proveedor proveedor) {
+    public Proveedor addProveedor(@Valid @RequestBody Proveedor proveedor) {
         return proveedorService.addProveedor(proveedor);
     }
 

@@ -1,4 +1,5 @@
 package com.konta.backend.controller;
+
 import com.konta.backend.entity.Cliente;
 import com.konta.backend.service.ClienteService;
 import jakarta.validation.Valid;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/customers")
+@RequestMapping("/api/customers") // Mantenemos tu ruta original intacta
 public class ClienteController {
 
     @Autowired
@@ -17,7 +18,18 @@ public class ClienteController {
     // --- Endpoints ---
 
     @GetMapping
-    public List<Cliente> getClientes() {
+    public List<Cliente> getClientes(
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) String nombre) {
+
+        if (estado != null) {
+            return clienteService.getClienteByState(estado);
+        }
+
+        if (nombre != null) {
+            return clienteService.getClienteByName(nombre);
+        }
+
         return clienteService.getClientes();
     }
 

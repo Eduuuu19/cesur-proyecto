@@ -1,12 +1,15 @@
 package com.konta.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
-@Table(name = "clientes")
+@Table(name = "clientes", uniqueConstraints = {
+@UniqueConstraint(columnNames = {"nif", "id_usuario"})
+})
 public class Cliente {
 
     @Id
@@ -14,6 +17,7 @@ public class Cliente {
     @Column(name = "id_cliente")
     private Long idCliente;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;

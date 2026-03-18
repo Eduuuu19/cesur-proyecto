@@ -16,6 +16,8 @@ public class PresupuestoController {
     @Autowired
     private PresupuestoService presupuestoService;
 
+    // --- Endpoints ---
+
     @GetMapping
     public List<Presupuesto> getPresupuestos(
             @RequestParam(required = false) String estado,
@@ -23,11 +25,11 @@ public class PresupuestoController {
             Sort sort) {
 
         if (estado != null) {
-            return presupuestoService.getPresupuestosPorEstado(estado, sort);
+            return presupuestoService.getPresupuestosByState(estado, sort);
         }
 
         if (nif != null) {
-            return presupuestoService.getPresupuestosPorNif(nif, sort);
+            return presupuestoService.getPresupuestosByNif(nif, sort);
         }
 
         return presupuestoService.getPresupuestos(sort);

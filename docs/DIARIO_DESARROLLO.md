@@ -17,22 +17,19 @@
    - *Solución:* Forcé la versión 17 en el archivo `pom.xml` y sincronicé Maven.
 2. **Error de Dialecto:** Hibernate fallaba al arrancar (`ClassNotFoundException`).
    - *Solución:* Eliminé la línea del dialecto antiguo en `application.properties`.
-
 ### Avances
 - Conexión establecida entre Backend (Java) y Base de Datos.
 - Entidad 'Cliente' creada con los mismos nombres de columna que en BBDD.
 - Comprobado que la aplicación modifica la tabla automáticamente al arrancar.
 
 ## [03-02-2026] - Capa de Acceso a Datos (Repository)
-
 ### Avances
 - Creado paquete `repository`.
 - Implementada interfaz `ClienteRepository` que extiende de `JpaRepository`.
 - Verificado que el tipo de dato de la PK en BBDD (`bigint`) coincide con Java (`Long`).
 - Comprobado que la aplicación arranca e inyecta el repositorio correctamente.
-
+- 
 ## [06-02-2026] - CRUD Completo de Clientes
-
 ### Avances
 - Implementado método `addCliente` (POST) para ver fichas individuales.
 - Implementado método `getClientes` (GET) para ver fichas de todos los registros.
@@ -83,3 +80,38 @@
 - Creación de `UsuarioRepository` implementando el uso de la clase `Optional` de Java (`findByEmail`) para prevenir errores de tipo `NullPointerException` durante el futuro proceso de autenticación de credenciales.
 - Refactorización estructural del modelo de datos para cumplir con el Modelo de Relaciones y Cardinalidad: Implementación de la relación `@ManyToOne` en las entidades `Cliente`, `Proveedor`, `Presupuesto`, `FacturaEmitida` y `FacturaRecibida`.
 - Enlace efectivo de todas las tablas de Maestros, Ingresos y Gastos con la tabla `usuarios` mediante la restricción de clave foránea `id_usuario`, garantizando que ninguna operación económica quede huérfana en el sistema.
+
+## [14-03-2026] - Seguridad y JWT
+### Problemas encontrados
+1. **Bloqueo en rutas públicas (Error 403):** Al intentar probar el registro desde Postman, Spring Security me bloqueaba la petición constantemente.
+   - *Solución:* Tuve que poner explícitamente `requestMatchers("/api/auth/**").permitAll()` antes de decirle al sistema que requiriera autenticación para el resto de la API.
+### Avances
+- Configuración base de Spring Security implementada.
+- Lógica de generación y validación de tokens JWT terminada.
+- Endpoints de login y registro funcionando y probados en Postman.
+
+## [16-03-2026] - CRUD completo y privacidad de datos
+### Problemas encontrados
+1. **Bucle infinito al devolver JSON:** Al hacer un GET de los clientes, la consola empezó a lanzar errores `StackOverflowError`
+   - *Solución:* Añadí la anotación `@JsonIgnore` en la entidad para cortar la serialización recursiva de la librería Jackson.
+2. **Error de clave foránea al guardar:** Me daba `DataIntegrityViolationException` al intentar guardar un cliente porque el `id_usuario` llegaba nulo.
+   - *Solución:* Creé un método `getUsuarioAutenticado()` para extraer el email directamente del token (`SecurityContextHolder`) y asignar el usuario por código antes de hacer el `save()`.
+### Avances
+- Terminados los controladores, servicios y repositorios de todos los módulos operativos (Maestros, Ingresos, Gastos).
+- Consultas JPA modificadas (ej. `findByEstadoAndUsuario`) para garantizar que nadie pueda acceder a datos de otra cuenta.
+
+## [17-03-2026] - Refactorización de filtros y configuración CORS
+### Problemas encontrados
+1. **Error 400 en búsquedas vacías:** Al pasar las rutas a `@RequestParam` para unificar los filtros, si enviaba la petición sin parámetros el servidor lanzaba un error 400 Bad Request.
+   - *Solución:* Añadí la propiedad `(required = false)` a las anotaciones para que los filtros sean opcionales y el endpoint no explote si no le mando nada.
+### Avances
+- Limpieza de controladores: he pasado a una arquitectura de "ventanilla única" para encadenar múltiples filtros en una misma ruta.
+- Creación de la clase `CorsConfig` para abrir los puertos al futuro Frontend (React/Angular/Vue) y permitir el paso de credenciales de sesión.
+
+## [18-03-2026] - Dashboard, Motor Analítico y Administrador
+### Problemas encontrados
+1. **El servidor no arrancaba:** Spring Boot me lanzaba un `PropertyReferenceException` diciendo que no encontraba la propiedad 'state' en la entidad Cliente.
+   - *Solución:* Como Spring Data JPA deriva las consultas del nombre del método, tiene que coincidir exactamente con la variable. Tenía `findByState...` pero la variable en Java era `estado`. Lo cambié a `findByEstadoAndUsuario`.
+### Avances
+- Servicio del Dashboard creado: he usado Java Streams para agrupar, filtrar y sumar las facturas por meses, generando directamente los arrays de datos que necesitará el frontend para dibujar las gráficas.
+- Módulo de administración terminado: añadida la propiedad `estado` a los usuarios para que el rol ADMIN pueda bloquear cuentas y activar el "Modo Mantenimiento".

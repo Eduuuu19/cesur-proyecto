@@ -1,8 +1,11 @@
 package com.konta.backend.service;
 
 import com.konta.backend.entity.Cliente;
+import com.konta.backend.entity.Usuario;
 import com.konta.backend.repository.ClienteRepository;
+import com.konta.backend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,34 +13,47 @@ import java.util.List;
 @Service
 public class ClienteService {
 
-    @Autowired //
+    @Autowired
     private ClienteRepository clienteRepository;
 
-    // --- MÉTODOS ---
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    // Mostrar todos los clientes
-    public List<Cliente> getClientes() {
-        return clienteRepository.findAll();
+    private Usuario getUsuarioAutenticado(){
+        String emailAutenticado = SecurityContextHolder.getContext().getAuthentication().getName();
+        return usuarioRepository.findByEmail(emailAutenticado)
+                .orElseThrow(() -> new IllegalArgumentException("El usuario autenticado no existe en el sistema"));
     }
 
-    // Crear un cliente nuevo
+    public List<Cliente> getClientes() {
+        Usuario usuario = getUsuarioAutenticado();
+        return clienteRepository.findByUsuario(usuario);
+    }
+
     public Cliente addCliente(Cliente cliente) {
+
+        Usuario usuario = getUsuarioAutenticado();
+
+        if (clienteRepository.existsByNifAndUsuario(cliente.getNif(), usuario)){
+            throw new IllegalArgumentException("Error: Ya tienes un cliente registrado con el NIF " + cliente.getNif());
+        }
+        cliente.setUsuario(usuario);
         return clienteRepository.save(cliente);
     }
 
-    // Mostrar un solo cliente
     public Cliente getClienteById(Long id){
-        return clienteRepository.findById(id).orElse(null);
+        Usuario usuario = getUsuarioAutenticado();
+        return clienteRepository.findByIdClienteAndUsuario(id, usuario)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado o no tienes permisos para verlo"));
     }
 
-    // Eliminar un cliente
     public void deleteCliente(Long id){
-        clienteRepository.deleteById(id);
+        Cliente cliente = getClienteById(id);
+        clienteRepository.delete(cliente);
     }
 
-    // Actualizar un cliente
     public Cliente updateCliente(Long id, Cliente clienteDetalles){
-        Cliente clienteExistente = clienteRepository.findById(id).orElse(null);
+        Cliente clienteExistente = getClienteById(id);
 
         if (clienteExistente != null) {
             clienteExistente.setNombre(clienteDetalles.getNombre());
@@ -50,6 +66,16 @@ public class ClienteService {
             return clienteRepository.save(clienteExistente);
         }
 
-        return null; // Si no existía, no hacemos nada
+        return null;
+    }
+
+    public List<Cliente> getClienteByState(String estado) {
+        Usuario usuario = getUsuarioAutenticado();
+        return clienteRepository.findByEstadoAndUsuario(estado, usuario);
+    }
+
+    public List<Cliente> getClienteByName(String nombre) {
+        Usuario usuario = getUsuarioAutenticado();
+        return clienteRepository.findByNombreContainingIgnoreCaseAndUsuario(nombre, usuario);
     }
 }

@@ -6,7 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
-@Table(name = "proveedores")
+@Table(name = "proveedores", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"nif", "id_usuario"})
+})
 public class Proveedor {
 
     @Id

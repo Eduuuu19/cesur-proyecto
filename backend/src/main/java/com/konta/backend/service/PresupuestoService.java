@@ -1,9 +1,12 @@
 package com.konta.backend.service;
 
 import com.konta.backend.entity.Presupuesto;
+import com.konta.backend.entity.Usuario;
 import com.konta.backend.repository.PresupuestoRepository;
+import com.konta.backend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,26 +16,37 @@ public class PresupuestoService {
 
     @Autowired
     private PresupuestoRepository presupuestoRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    private Usuario getUsuarioAutenticado() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("El usuario autenticado no existe"));
+    }
 
     public List<Presupuesto> getPresupuestos(Sort sort) {
-        return presupuestoRepository.findAll(sort);
+        return presupuestoRepository.findByUsuario(getUsuarioAutenticado(), sort);
     }
 
-    public List<Presupuesto> getPresupuestosPorEstado(String estado, Sort sort) {
-        return presupuestoRepository.findByEstado(estado, sort);
-    }
-
-    public List<Presupuesto> getPresupuestosPorNif(String nif, Sort sort) {
-        return presupuestoRepository.findByClienteNif(nif, sort);
-    }
     public Presupuesto getPresupuestoById(Long id) {
-        return presupuestoRepository.findById(id).orElse(null);
+        return presupuestoRepository.findByIdPresupuestoAndUsuario(id, getUsuarioAutenticado())
+                .orElseThrow(() -> new IllegalArgumentException("Presupuesto no encontrado o sin permisos"));
     }
 
 
     public Presupuesto addPresupuesto(Presupuesto presupuesto) {
+        Usuario usuario = getUsuarioAutenticado();
+
+        if (presupuestoRepository.existsByNumeroPresupuestoAndUsuario(presupuesto.getNumeroPresupuesto(), usuario)) {
+            throw new IllegalArgumentException("Error: Ya tienes un presupuesto con el número " + presupuesto.getNumeroPresupuesto());
+        }
+
+        presupuesto.setUsuario(usuario);
+
         Double totalPresupuesto = calcularTotalPresupuesto(presupuesto.getBaseImponible(), presupuesto.getIva());
         presupuesto.setTotal(totalPresupuesto);
+
         return presupuestoRepository.save(presupuesto);
     }
 
@@ -41,7 +55,7 @@ public class PresupuestoService {
     }
 
     public Presupuesto updatePresupuesto(Long id, Presupuesto presupuestoDetalles) {
-        Presupuesto presupuestoExistente = presupuestoRepository.findById(id).orElse(null);
+        Presupuesto presupuestoExistente = getPresupuestoById(id);
 
         if (presupuestoExistente != null) {
             presupuestoExistente.setNumeroPresupuesto(presupuestoDetalles.getNumeroPresupuesto());
@@ -62,5 +76,13 @@ public class PresupuestoService {
     // Realizo el cálculo del total del presupuesto a partir de la base imponible y el IVA introducido por el usuario
     public Double calcularTotalPresupuesto(Double baseImponible, Double iva){
         return baseImponible + (baseImponible * (iva / 100));
+    }
+
+    public List<Presupuesto> getPresupuestosByState(String estado, Sort sort) {
+        return presupuestoRepository.findByEstadoAndUsuario(estado, getUsuarioAutenticado(), sort);
+    }
+
+    public List<Presupuesto> getPresupuestosByNif(String nif, Sort sort) {
+        return presupuestoRepository.findByClienteNifAndUsuario(nif, getUsuarioAutenticado(), sort);
     }
 }

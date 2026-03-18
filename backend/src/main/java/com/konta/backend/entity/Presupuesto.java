@@ -9,7 +9,9 @@ import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "presupuestos")
+@Table(name = "presupuestos", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"numero_presupuesto", "id_usuario"})
+})
 public class Presupuesto {
 
     @Id
@@ -26,7 +28,7 @@ public class Presupuesto {
     private Usuario usuario;
 
     @NotBlank(message = "El número de presupuesto no puede estar vacío")
-    @Column(name = "numero_presupuesto", unique = true)
+    @Column(name = "numero_presupuesto")
     private String numeroPresupuesto;
 
     @NotNull(message = "La fecha no puede estar vacía")

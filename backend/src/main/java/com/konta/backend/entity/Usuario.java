@@ -1,5 +1,6 @@
 package com.konta.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -25,6 +26,7 @@ public class Usuario {
 
     private String telefono;
 
+    @JsonIgnore
     @NotBlank(message = "La contraseña no puede estar vacía")
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
@@ -33,6 +35,9 @@ public class Usuario {
 
     @Column(nullable = false)
     private String rol;
+
+    @Column(nullable = false)
+    private String estado = "Activo"; // Por defecto, todos nacen activos
 
     public Usuario() {
     }
@@ -100,5 +105,13 @@ public class Usuario {
 
     public void setRol(String rol) {
         this.rol = rol;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }

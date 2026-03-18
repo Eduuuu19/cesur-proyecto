@@ -4,7 +4,6 @@ import com.konta.backend.entity.FacturaEmitida;
 import com.konta.backend.service.FacturaEmitidaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
