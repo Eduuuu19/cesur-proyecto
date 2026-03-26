@@ -35,7 +35,6 @@ public class GlobalExceptionHandler {
     public Map<String, String> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         Map<String, String> error = new HashMap<>();
 
-        // Extraigo el mensaje original para poder filtrarlo e imprimir lo que necesito según el tipo de error.
         String mensajeMySQL = ex.getMostSpecificCause().getMessage();
 
         if (mensajeMySQL != null && mensajeMySQL.contains("Duplicate entry")) {
@@ -48,6 +47,15 @@ public class GlobalExceptionHandler {
             error.put("error", "Error de integridad en la base de datos.");
         }
 
+        return error;
+    }
+
+    // 3. Atrapa los errores de lógica de negocio (Lanzados manualmente con IllegalArgumentException)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public Map<String, String> handleIllegalArgumentException(IllegalArgumentException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
         return error;
     }
 }

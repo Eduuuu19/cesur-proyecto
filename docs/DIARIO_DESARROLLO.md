@@ -115,3 +115,23 @@
 ### Avances
 - Servicio del Dashboard creado: he usado Java Streams para agrupar, filtrar y sumar las facturas por meses, generando directamente los arrays de datos que necesitará el frontend para dibujar las gráficas.
 - Módulo de administración terminado: añadida la propiedad `estado` a los usuarios para que el rol ADMIN pueda bloquear cuentas y activar el "Modo Mantenimiento".
+
+## [23-03-2026] - Inicialización del Frontend y Arquitectura CSS
+### Avances
+- Creación del proyecto Frontend utilizando React y Vite para una compilación rápida.
+- Limpieza de archivos base y estructuración de carpetas siguiendo el patrón de Diseño Atómico (`components/atoms`, `pages`, `assets`).
+- Definición de la arquitectura de estilos: Se opta por **CSS Modules** para garantizar el aislamiento de estilos por componente y evitar colisiones de clases.
+- Creación del sistema de diseño global en `index.css`: Definición de variables CSS (Custom Properties) para la paleta de colores corporativa (primarios, neutros/grises, alertas) y tipografía base.
+
+## [25-03-2026] - Desarrollo de Componentes Atómicos (UI Kit)
+### Avances
+- Creación del componente reutilizable `InputField.jsx`: Incorpora lógica interna para gestionar su propio estado (visibilidad de contraseña con iconos dinámica) y recibe funciones del componente padre (`onClear`) para limpiar el texto.
+- Implementación visual de campos obligatorios vs opcionales mediante la prop `isRequired`, renderizando dinámicamente el asterisco rojo.
+- Desarrollo de componentes atómicos adicionales: `Button.jsx`, `Checkbox.jsx` (para la opción "Recuérdame") y `FormLegend.jsx`.
+
+## [26-03-2026] - Ensamblaje de Pantallas de Autenticación y Enrutamiento
+### Avances
+- Construcción de la `LoginPage` ensamblando los átomos previamente creados, manteniendo el componente limpio de lógica CSS y etiquetas HTML puras.
+- Construcción de la `RegisterPage` demostrando la escalabilidad del diseño atómico.
+- Configuración del enrutador principal en `App.jsx` utilizando `react-router-dom`, estableciendo las rutas `/login` y `/register`, y un redireccionamiento por defecto.
+- Instalación de la librería externa `react-phone-number-input` para gestionar de forma estandarizada y profesional la selección de prefijos telefónicos internacionales en el formulario de registro.

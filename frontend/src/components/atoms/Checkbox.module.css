@@ -1,0 +1,27 @@
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.checkboxInput {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--color-primary-500); 
+}
+
+.checkboxLabel {
+  font-size: 14px;
+  color: var(--color-gray-700);
+  cursor: pointer;
+  user-select: none; 
+}
+
+/*Asterisco para marcar campos obligatorios*/
+.requiredMark {
+  color: var(--color-danger-500); 
+  margin-left: 4px; 
+  font-weight: 700;
+}
