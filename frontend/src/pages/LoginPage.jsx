@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './LoginPage.module.css';
+import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import Button from '../components/atoms/Button';
 import Checkbox from '../components/atoms/Checkbox';
@@ -64,7 +65,7 @@ export default function LoginPage() {
         </form>
 
         <div className={styles.footerContainer}>
-          <p>¿No tienes una cuenta? <a href="#" className={styles.registerLink}>Regístrate</a></p>
+          <p>¿No tienes una cuenta? <Link to="/register" className={styles.registerLink}>Regístrate</Link></p>
         </div>
 
       </div>

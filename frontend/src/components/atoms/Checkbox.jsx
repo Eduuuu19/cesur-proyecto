@@ -10,7 +10,6 @@ export default function Checkbox({ label, checked, onChange }) {
         className={styles.checkboxInput}
       />
       <span className={styles.checkboxLabel}>{label}</span>
-      <span className={styles.requiredMark}>*</span>
     </label>
   );
 }

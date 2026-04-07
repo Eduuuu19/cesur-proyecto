@@ -1,0 +1,93 @@
+.chartContainer {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  width: 100%;
+}
+
+.chartHeader {
+  background-color: var(--color-primary-500);
+  color: white;
+  padding: 12px 16px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  border-top-left-radius: 12px; 
+  border-top-right-radius: 12px;
+}
+
+.chartBody {
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px; 
+}
+
+/* --- Leyenda y Año --- */
+.controlsRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.legendGroup {
+  display: flex;
+  flex: 1;
+  gap: 16px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-gray-800);
+  font-weight: 500;
+}
+
+.dotIncome {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--color-primary-400); 
+}
+
+.dotExpense {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--color-danger-300); 
+}
+
+.menuIcon {
+  color: var(--color-gray-400);
+  cursor: pointer;
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* --- Gráfico --- */
+.chartWrapper {
+  height: 350px; 
+  width: 100%;
+  margin-top: 16px;
+}
+
+/* ##### RESPONSIVE ##### */
+@media (max-width: 768px) {
+  .controlsRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .menuIcon {
+    justify-content: flex-start;
+  }
+
+  .chartWrapper {
+    height: 250px;
+  }
+}

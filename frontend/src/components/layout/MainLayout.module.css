@@ -1,0 +1,18 @@
+.layoutWrapper {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--color-gray-300); 
+}
+
+.contentArea {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContent {
+  padding: 32px;
+  flex: 1;
+  overflow-y: auto; 
+}

@@ -82,16 +82,28 @@
   align-items: center;
 }
 
-.forgotPasswordLink {
+.phoneLabel {
+  display: block;
+  margin-bottom: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-primary-500);
-  text-decoration: none;
-  transition: color 0.2s ease;
+  color: var(--color-gray-700);
 }
 
-.forgotPasswordLink:hover {
-  color: var(--color-primary-600);
+.phoneContainer :global(.PhoneInputInput) {
+  width: 100%;
+  padding: 10px 40px 10px 16px;  
+  font-size: 14px;
+  font-family: inherit; 
+  border: 1px solid var(--color-gray-300); 
+  border-radius: 8px;
+  outline: none; 
+  transition: all 0.2s ease-in-out; 
+}
+
+.phoneContainer :global(.PhoneInputInput:focus) {
+  border-color: var(--color-primary-500); 
+  box-shadow: 0 0 0 2px var(--color-primary-100); 
 }
 
 /* pie de página */

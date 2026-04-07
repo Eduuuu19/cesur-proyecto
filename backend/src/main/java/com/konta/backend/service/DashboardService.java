@@ -61,7 +61,7 @@ public class DashboardService {
         double[] graficoIngresosDiarios = new double[diasDelMes];
         double[] graficoGastosDiarios = new double[diasDelMes];
 
-        // Rellenamos los arrays día a día
+        // Relleno los arrays día a día
         for (FacturaEmitida f : ingresosDelMes) {
             int dia = f.getFecha().getDayOfMonth() - 1;
             graficoIngresosDiarios[dia] += f.getTotal();
@@ -118,7 +118,7 @@ public class DashboardService {
     public Map<Integer, Set<Integer>> getFechasDisponibles() {
         Usuario usuario = getUsuarioAutenticado();
 
-        // Usao TreeMap con orden inverso para que los años más recientes salgan primero
+        // Uso TreeMap con orden inverso para que los años más recientes salgan primero
         // Y dentro de cada año, un TreeSet para que los meses salgan ordenados (1, 2, 3...)
         Map<Integer, Set<Integer>> fechasDisponibles = new TreeMap<>(Collections.reverseOrder());
 

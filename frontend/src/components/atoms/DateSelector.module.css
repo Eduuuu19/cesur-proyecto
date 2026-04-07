@@ -1,0 +1,21 @@
+.selectorWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-gray-600);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.selectorWrapper:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-primary-500);
+}
+
+.hiddenInput {
+  display: none;
+}

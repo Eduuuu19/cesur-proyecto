@@ -135,3 +135,17 @@
 - Construcción de la `RegisterPage` demostrando la escalabilidad del diseño atómico.
 - Configuración del enrutador principal en `App.jsx` utilizando `react-router-dom`, estableciendo las rutas `/login` y `/register`, y un redireccionamiento por defecto.
 - Instalación de la librería externa `react-phone-number-input` para gestionar de forma estandarizada y profesional la selección de prefijos telefónicos internacionales en el formulario de registro.
+
+## [07-04-2026] - Dashboard, Visualización de Datos y Arquitectura Atómica
+### Problemas encontrados
+1. **Componente `Cell` obsoleto en Recharts:** Al intentar pintar las barras de forma individual, la consola mostraba un error de *deprecation* y el navegador se quedaba en blanco.
+   - *Solución:* Se eliminó el uso de `<Cell />` y se pasó la propiedad `fill` directamente dentro del objeto de datos, cumpliendo con los estándares de la versión 4.0 de la librería.
+2. **Desbordamiento de texto en Sidebar colapsado:** Al minimizar la barra, los textos de los enlaces se amontonaban o se cortaban de forma antiestética.
+   - *Solución:* Se envolvieron los textos en condicionales de React (`!isCollapsed && ...`) y se aplicó `overflow: hidden` y `white-space: nowrap` en el CSS para asegurar una transición limpia.
+### Avances
+- **Implementación de Recharts:** Integración de la librería `recharts` para la visualización de datos. Se han creado gráficos de área para la evolución diaria de ingresos y gastos, y gráficos de barras comparativos para beneficios y balance anual.
+- **Diseño del Layout y Sidebar Retráctil:** Implementación de la estructura base de la aplicación (`MainLayout`) que integra una barra lateral funcional. Se incluyó lógica para que los acordeones de "Maestros" e "Ingresos" abran automáticamente la barra si esta se encuentra minimizada.
+- **Creación de la Barra Superior (Header):** Desarrollo de la cabecera global que contiene el buscador, la información del usuario y el acceso al perfil, manteniendo la coherencia visual en toda la plataforma.
+- **Maquetación Integral del Panel de Control:** Ensamblaje final de la pantalla de Dashboard, combinando las tarjetas de resumen con KPIs financieros, selectores de fecha y la lógica de visualización de gráficos dinámicos.
+- **Estilización Avanzada con CSS Modules:** Uso de variables globales de CSS y transiciones suaves para la animación de la barra lateral y el diseño de la interfaz.
+

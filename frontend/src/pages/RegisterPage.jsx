@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import styles from './RegisterPage.module.css';
+import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import InputField from '../components/atoms/InputField';
 import Button from '../components/atoms/Button';
 import Checkbox from '../components/atoms/Checkbox';
+import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-number-input';
 
 export default function RegisterPage() {
     const [firstName, setFirstName] = useState('');
@@ -49,14 +52,18 @@ export default function RegisterPage() {
                         isRequired={true}
                     />
 
-                    <InputField
-                        label="Teléfono (Opcional)"
-                        type="tel"
-                        placeholder="Ej: +34 600 000 000"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        onClear={() => setPhone('')}
-                    />
+                    <div className={styles.phoneContainer}>
+                        <label className={styles.phoneLabel}>
+                            Teléfono (Opcional)
+                        </label>
+                        
+                        <PhoneInput
+                            placeholder="Ej: 600 000 000"
+                            value={phone}
+                            onChange={setPhone} 
+                            defaultCountry="ES" 
+                        />
+                    </div>
 
                     <InputField
                         label="Contraseña"
@@ -91,7 +98,7 @@ export default function RegisterPage() {
                 </form>
 
                 <div className={styles.footerContainer}>
-                    <p>¿Ya tienes una cuenta? <a href="#" className={styles.registerLink}>Inicia sesión</a></p>
+                    <p>¿Ya tienes una cuenta? <Link to="/login" className={styles.registerLink}>Inicia sesión</Link></p>
                 </div>
 
             </div>

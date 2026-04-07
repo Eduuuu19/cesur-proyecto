@@ -1,0 +1,21 @@
+.dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  margin-bottom: 24px;
+}
+
+.cardsRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+/* ##### RESPONSIVE ##### */

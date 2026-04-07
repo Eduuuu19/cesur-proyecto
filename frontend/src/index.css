@@ -44,4 +44,37 @@
     --color-gray-700: #334155;
     --color-gray-800: #1e293b;
     --color-gray-900: #0f172a;
+
+    /* --- ESTILOS PERSONALIZADOS PARA EL CALENDARIO --- */
+
+    .react-datepicker__month-text--selected,
+    .react-datepicker__month-text--keyboard-selected,
+    .react-datepicker__year-text--selected,
+    .react-datepicker__year-text--keyboard-selected {
+        background-color: var(--color-primary-500) !important;
+        color: white !important;
+        font-weight: 600;
+    }
+
+    .react-datepicker__year-wrapper {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: space-evenly !important;
+        max-width: 100% !important;
+    }
+
+    .react-datepicker__year-text {
+        margin: 2px !important;
+        width: 25% !important;
+    }
+
+    .react-datepicker__month-text:hover,
+    .react-datepicker__year-text:hover {
+        background-color: var(--color-primary-100) !important;
+    }
+
+    .react-datepicker__header {
+        background-color: var(--color-gray-50) !important;
+        border-bottom: 1px solid var(--color-gray-200) !important;
+    }
 }
