@@ -7,22 +7,25 @@
   padding: 24px 16px;
   color: var(--color-gray-50);
   box-shadow: 5px 0 10px rgba(0, 0, 0, 0.3);
-  transition: width 0.3s ease; /* ESTA ES LA MAGIA: Animación de encogerse */
-  overflow-x: hidden; /* Evita que el texto salga por los lados mientras se anima */
-  white-space: nowrap; /* Evita que el texto se parta en dos líneas */
+  transition: width 0.3s ease;
+  /* ESTA ES LA MAGIA: Animación de encogerse */
+  overflow-x: hidden;
+  /* Evita que el texto salga por los lados mientras se anima */
+  white-space: nowrap;
+  /* Evita que el texto se parta en dos líneas */
 }
 
 /* Modificador cuando está colapsada */
 .collapsed {
-  width: 80px; 
-  padding: 24px 12px; 
+  width: 80px;
+  padding: 24px 12px;
 }
 
 /* Cabecera */
 .logoContainer {
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   margin-bottom: 40px;
   padding: 0 4px;
 }
@@ -70,7 +73,7 @@
 
 /* Contenedor principal*/
 .navMenu {
-  flex: 1; 
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -87,33 +90,33 @@
   border-radius: 8px;
   font-weight: 500;
   transition: background-color 0.2s ease;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .collapsed .navLink {
   justify-content: center;
   padding: 12px;
-  width: 44px; 
+  width: 44px;
   height: 44px;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
 .icon {
-  flex-shrink: 0; 
+  flex-shrink: 0;
 }
 
 .navLink:not(.activeLink):hover {
-  background-color: var(--color-primary-600); 
+  background-color: var(--color-primary-600);
 }
 
 /* Diseño EXCLUSIVO para el enlace de la página actual */
 .activeLink {
-  background-color: var(--color-secondary-200); 
-  color: var(--color-secondary-600); 
+  background-color: var(--color-secondary-200);
+  color: var(--color-primary-600);
 }
 
 .activeLink:hover {
-  background-color: var(--color-secondary-300); 
+  background-color: var(--color-secondary-300);
 }
 
 /* Estilo para los botones que despliegan menús */
@@ -122,7 +125,7 @@
   border: none;
   cursor: pointer;
   font-size: 16px;
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
 .navButtonLeft {
@@ -140,7 +143,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-left: 36px; 
+  margin-left: 36px;
   margin-top: 4px;
   margin-bottom: 8px;
 }
@@ -155,9 +158,14 @@
   transition: all 0.2s ease;
 }
 
+.subNavLink.activeLink {
+  background-color: var(--color-secondary-200);
+  color: var(--color-primary-600);
+  font-weight: 500;
+}
+
 .subNavLink:not(.activeLink):hover {
   background-color: var(--color-primary-600);
-  color: white;
 }
 
 /* Contenedor inferior */

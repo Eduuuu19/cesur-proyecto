@@ -149,3 +149,9 @@
 - **Maquetación Integral del Panel de Control:** Ensamblaje final de la pantalla de Dashboard, combinando las tarjetas de resumen con KPIs financieros, selectores de fecha y la lógica de visualización de gráficos dinámicos.
 - **Estilización Avanzada con CSS Modules:** Uso de variables globales de CSS y transiciones suaves para la animación de la barra lateral y el diseño de la interfaz.
 
+## [08-04-2026] - Paginación Dinámica y Expansión de Vistas de Gestión
+### Avances
+- **Lógica de Paginación en DataTable:** Implementación de lógica matemática en el componente maestro para segmentar datos en grupos de 10 registros. Se añadieron controles de navegación dinámica (flechas y números) con validaciones de seguridad (`Math.max` / `Math.min`) para evitar navegación fuera de límites.
+- **Creación de FacturasEmitidasPage, PresupuestosPage y FacturasRecibidasPage:** Expansión del sistema mediante la reutilización del componente `DataTable`. Se configuraron las columnas específicas para presupuestos y facturas emitidas y recibidas, demostrando la eficiencia del diseño modular.
+- **Refactorización de Rutas:** Configuración de los nuevos endpoints en `App.jsx` para dar soporte a la navegación completa entre las secciones de Ingresos y Gastos.
+- **Ajustes de UI/UX y Accesibilidad:** Mejora del contraste visual en el Sidebar mediante el uso de selectores CSS específicos para sub-enlaces activos, garantizando la legibilidad del texto sobre los fondos destacados.

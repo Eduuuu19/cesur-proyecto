@@ -38,6 +38,173 @@ export default function FacturasEmitidasPage() {
       total: 3500.0,
       estado: "Vencida",
       cliente: { idCliente: 3, nombre: "Cliente 3", nif: "B00000003" }
+    },
+    {
+      idFacturaEmitida: 1,
+      numeroFactura: "F001",
+      fecha: "15 Mar 2026",
+      concepto: "Desarrollo web",
+      baseImponible: 1000.0,
+      iva: 21.0,
+      total: 2300.0,
+      estado: "Pagada",
+      cliente: { idCliente: 1, nombre: "Cliente 1", nif: "B00000001" }
+    },
+    {
+      idFacturaEmitida: 2,
+      numeroFactura: "F002",
+      fecha: "17 Mar 2026",
+      concepto: "Mantenimiento",
+      baseImponible: 500.0,
+      iva: 21.0,
+      total: 1100.0,
+      estado: "Pendiente",
+      cliente: { idCliente: 2, nombre: "Cliente 2", nif: "B00000002" }
+    },
+    {
+      idFacturaEmitida: 3,
+      numeroFactura: "F003",
+      fecha: "10 Abril 2026",
+      concepto: "Auditoría SEO",
+      baseImponible: 800.0,
+      iva: 21.0,
+      total: 3500.0,
+      estado: "Vencida",
+      cliente: { idCliente: 3, nombre: "Cliente 3", nif: "B00000003" }
+    }
+    ,
+    {
+      idFacturaEmitida: 1,
+      numeroFactura: "F001",
+      fecha: "15 Mar 2026",
+      concepto: "Desarrollo web",
+      baseImponible: 1000.0,
+      iva: 21.0,
+      total: 2300.0,
+      estado: "Pagada",
+      cliente: { idCliente: 1, nombre: "Cliente 1", nif: "B00000001" }
+    },
+    {
+      idFacturaEmitida: 2,
+      numeroFactura: "F002",
+      fecha: "17 Mar 2026",
+      concepto: "Mantenimiento",
+      baseImponible: 500.0,
+      iva: 21.0,
+      total: 1100.0,
+      estado: "Pendiente",
+      cliente: { idCliente: 2, nombre: "Cliente 2", nif: "B00000002" }
+    },
+    {
+      idFacturaEmitida: 3,
+      numeroFactura: "F003",
+      fecha: "10 Abril 2026",
+      concepto: "Auditoría SEO",
+      baseImponible: 800.0,
+      iva: 21.0,
+      total: 3500.0,
+      estado: "Vencida",
+      cliente: { idCliente: 3, nombre: "Cliente 3", nif: "B00000003" }
+    },
+    {
+      idFacturaEmitida: 1,
+      numeroFactura: "F001",
+      fecha: "15 Mar 2026",
+      concepto: "Desarrollo web",
+      baseImponible: 1000.0,
+      iva: 21.0,
+      total: 2300.0,
+      estado: "Pagada",
+      cliente: { idCliente: 1, nombre: "Cliente 1", nif: "B00000001" }
+    },
+    {
+      idFacturaEmitida: 2,
+      numeroFactura: "F002",
+      fecha: "17 Mar 2026",
+      concepto: "Mantenimiento",
+      baseImponible: 500.0,
+      iva: 21.0,
+      total: 1100.0,
+      estado: "Pendiente",
+      cliente: { idCliente: 2, nombre: "Cliente 2", nif: "B00000002" }
+    },
+    {
+      idFacturaEmitida: 3,
+      numeroFactura: "F003",
+      fecha: "10 Abril 2026",
+      concepto: "Auditoría SEO",
+      baseImponible: 800.0,
+      iva: 21.0,
+      total: 3500.0,
+      estado: "Vencida",
+      cliente: { idCliente: 3, nombre: "Cliente 3", nif: "B00000003" }
+    },
+    {
+      idFacturaEmitida: 1,
+      numeroFactura: "F001",
+      fecha: "15 Mar 2026",
+      concepto: "Desarrollo web",
+      baseImponible: 1000.0,
+      iva: 21.0,
+      total: 2300.0,
+      estado: "Pagada",
+      cliente: { idCliente: 1, nombre: "Cliente 1", nif: "B00000001" }
+    },
+    {
+      idFacturaEmitida: 2,
+      numeroFactura: "F002",
+      fecha: "17 Mar 2026",
+      concepto: "Mantenimiento",
+      baseImponible: 500.0,
+      iva: 21.0,
+      total: 1100.0,
+      estado: "Pendiente",
+      cliente: { idCliente: 2, nombre: "Cliente 2", nif: "B00000002" }
+    },
+    {
+      idFacturaEmitida: 3,
+      numeroFactura: "F003",
+      fecha: "10 Abril 2026",
+      concepto: "Auditoría SEO",
+      baseImponible: 800.0,
+      iva: 21.0,
+      total: 3500.0,
+      estado: "Vencida",
+      cliente: { idCliente: 3, nombre: "Cliente 3", nif: "B00000003" }
+    }
+    ,
+    {
+      idFacturaEmitida: 1,
+      numeroFactura: "F001",
+      fecha: "15 Mar 2026",
+      concepto: "Desarrollo web",
+      baseImponible: 1000.0,
+      iva: 21.0,
+      total: 2300.0,
+      estado: "Pagada",
+      cliente: { idCliente: 1, nombre: "Cliente 1", nif: "B00000001" }
+    },
+    {
+      idFacturaEmitida: 2,
+      numeroFactura: "F002",
+      fecha: "17 Mar 2026",
+      concepto: "Mantenimiento",
+      baseImponible: 500.0,
+      iva: 21.0,
+      total: 1100.0,
+      estado: "Pendiente",
+      cliente: { idCliente: 2, nombre: "Cliente 2", nif: "B00000002" }
+    },
+    {
+      idFacturaEmitida: 3,
+      numeroFactura: "F003",
+      fecha: "10 Abril 2026",
+      concepto: "Auditoría SEO",
+      baseImponible: 800.0,
+      iva: 21.0,
+      total: 3500.0,
+      estado: "Vencida",
+      cliente: { idCliente: 3, nombre: "Cliente 3", nif: "B00000003" }
     }
   ]);
 

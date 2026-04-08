@@ -113,7 +113,7 @@ export default function Sidebar() {
         )}
 
         {/* --- RESTO DE ENLACES --- */}
-        <NavLink to="/gastos" className={navLinkClass}>
+        <NavLink to="/facturas-recibidas" className={navLinkClass}>
           <FiTrendingDown size={20} className={styles.icon} />
           {!isCollapsed && <span>Gastos</span>}
         </NavLink>
