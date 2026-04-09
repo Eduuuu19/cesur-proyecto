@@ -6,6 +6,8 @@ import DashboardPage from './pages/DashboardPage'
 import FacturasEmitidasPage from './pages/FacturasEmitidasPage';
 import PresupuestosPage from './pages/PresupuestosPage';
 import FacturasRecibidasPage from './pages/FacturasRecibidasPage';
+import ClientesPage from './pages/ClientesPage'; 
+import ProveedoresPage from './pages/ProveedoresPage';
 
 function App() {
   return (
@@ -20,9 +22,11 @@ function App() {
 
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="/clientes" element={<ClientesPage />} />
           <Route path="/facturas-emitidas" element={<FacturasEmitidasPage />} />
           <Route path="/presupuestos" element={<PresupuestosPage />} />
           <Route path="/facturas-recibidas" element={<FacturasRecibidasPage />} />
+          <Route path="/proveedores" element={<ProveedoresPage />} />
 
         </Route>
       </Routes>

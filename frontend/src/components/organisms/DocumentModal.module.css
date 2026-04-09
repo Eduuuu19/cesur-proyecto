@@ -1,0 +1,98 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  color: var(--color-gray-800);
+  margin: 0;
+  font-weight: 600;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.formStack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* CAJA GRIS DEL CÁLCULO ECONÓMICO */
+.calculoContainer {
+  background-color: var(--color-gray-50);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.totalWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-gray-300);
+}
+
+.totalLabel {
+  font-size: 20px;
+  color: var(--color-gray-600);
+}
+
+.totalAmount {
+  font-size: 32px;
+  font-weight: bold;
+  color: var(--color-gray-800);
+}
+
+/* AVISO DE ERROR DEL BACKEND */
+.alertDanger {
+  background-color: #fef2f2;
+  border: 1px solid #f87171;
+  color: #991b1b;
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+
+/* CONTENEDOR DEL INPUT DE TELÉFONO (FORMULARIOS MAESTROS) */
+.phoneContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.phoneLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-gray-700);
+}
+
+.phoneContainer :global(.PhoneInputInput) {
+  width: 100%;
+  padding: 12px 16px; 
+  font-size: 14px;
+  font-family: inherit; 
+  border: 1px solid var(--color-gray-300); 
+  border-radius: 8px;
+  background-color: var(--color-gray-50);
+  outline: none; 
+  transition: all 0.2s ease-in-out; 
+  box-sizing: border-box;
+}
+
+.phoneContainer :global(.PhoneInputInput:focus) {
+  border-color: var(--color-primary-500); 
+  background-color: white;
+}

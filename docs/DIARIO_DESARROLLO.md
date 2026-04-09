@@ -155,3 +155,7 @@
 - **Creación de FacturasEmitidasPage, PresupuestosPage y FacturasRecibidasPage:** Expansión del sistema mediante la reutilización del componente `DataTable`. Se configuraron las columnas específicas para presupuestos y facturas emitidas y recibidas, demostrando la eficiencia del diseño modular.
 - **Refactorización de Rutas:** Configuración de los nuevos endpoints en `App.jsx` para dar soporte a la navegación completa entre las secciones de Ingresos y Gastos.
 - **Ajustes de UI/UX y Accesibilidad:** Mejora del contraste visual en el Sidebar mediante el uso de selectores CSS específicos para sub-enlaces activos, garantizando la legibilidad del texto sobre los fondos destacados.
+
+## [09-04-2026] - Módulo de Maestros, Refactorización y Lógica CRUD
+### Avances
+- **Gestión de Clientes y Proveedores:** Creación de `ClientesPage` y `ProveedoresPage` con sus respectivos modales.
