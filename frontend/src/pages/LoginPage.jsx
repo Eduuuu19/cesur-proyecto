@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './LoginPage.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // NUEVO: Añadido useNavigate
+import axios from 'axios'; // NUEVO: Añadido axios para la conexión
 import logo from '../assets/logo.png';
 import Button from '../components/atoms/Button';
 import Checkbox from '../components/atoms/Checkbox';
@@ -11,6 +12,63 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+
+  // Estados para manejar el feedback visual
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage('');
+
+    if (!email.trim() || !password.trim()) {
+        return setErrorMessage('Por favor, rellena todos los campos.');
+    }
+
+    const payload = {
+        email: email,
+        password: password,
+        recordarCredenciales: rememberMe
+    };
+
+    try {
+        setIsLoading(true);
+        
+        const response = await axios.post('http://localhost:8080/api/auth/login', payload);
+        const token = response.data.token;
+
+        // Guardamr el token en el almacenamiento adecuado según la opción de "Recordar por 30 días"
+        if (rememberMe) {
+            localStorage.setItem('konta_token', token);
+        } else {
+            sessionStorage.setItem('konta_token', token);
+        }
+
+        navigate('/');
+
+    } catch (error) {
+        console.error(error);
+        // Captura de errores
+        if (error.response) {
+            // Si es un error de cliente (400, 401, 403, 404), asumimos que son credenciales incorrectas
+            if (error.response.status >= 400 && error.response.status < 500) {
+                setErrorMessage('Correo electrónico o contraseña incorrectos.');
+            } else {
+                // Si es un error 500, es que el código Java ha petado
+                setErrorMessage(`Error interno del servidor (${error.response.status}).`);
+            }
+        } else if (error.request) {
+            setErrorMessage('No se pudo conectar con el servidor.');
+        } 
+        else {
+            setErrorMessage('Error inesperado en la aplicación.');
+        }
+    } finally {
+        setIsLoading(false);
+    }
+  };
 
   return (
     <div className={styles.backgroundWrapper}>
@@ -26,7 +84,9 @@ export default function LoginPage() {
         <h2 className={styles.welcomeText}>Bienvenido de nuevo</h2>
         <p className={styles.subtitle}>Inicia sesión en tu cuenta</p>
 
-        <form className={styles.formContainer}>
+        {errorMessage && <div className={styles.alertError}>{errorMessage}</div>}
+
+        <form className={styles.formContainer} onSubmit={handleSubmit}>
           
           <InputField 
             label="Correo electrónico"
@@ -56,10 +116,10 @@ export default function LoginPage() {
             </a>
           </div>
 
-
           <Button 
-            text="Iniciar Sesión" 
+            text={isLoading ? "Verificando..." : "Iniciar Sesión"} 
             type="submit" 
+            disabled={isLoading}
           />
                     
         </form>

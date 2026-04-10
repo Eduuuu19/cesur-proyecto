@@ -124,3 +124,24 @@
 .registerLink:hover {
   color: var(--color-primary-600);
 }
+
+/* MENSAJES DE ALERTA Y ÉXITO */
+.alertError {
+  color: #b91c1c;
+  background-color: #fee2e2;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.alertSuccess {
+  color: #15803d;
+  background-color: #dcfce7;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  text-align: center;
+}

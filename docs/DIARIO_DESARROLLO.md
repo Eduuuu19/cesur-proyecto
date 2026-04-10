@@ -159,3 +159,11 @@
 ## [09-04-2026] - Módulo de Maestros, Refactorización y Lógica CRUD
 ### Avances
 - **Gestión de Clientes y Proveedores:** Creación de `ClientesPage` y `ProveedoresPage` con sus respectivos modales.
+
+## [10-04-2026] - Integración Frontend-Backend, Autenticación y Gestión de Sesiones (JWT)
+### Avances
+- **Integración de cliente HTTP (Axios):** Instalación y configuración de Axios para gestionar peticiones asíncronas entre React y la API REST de Spring Boot, implementando bloques `try...catch` para la captura y renderizado de errores en la interfaz.
+- **Flujo completo de Registro:** Conexión del formulario `RegisterPage` con el endpoint `/api/auth/register`.
+- **Resolución de Políticas de Seguridad:** Diagnóstico y solución de bloqueos de red configurando la clase `SecurityConfig.java` en el backend. Se habilitó el acceso al dominio local de Vite (`127.0.0.1:5173`) y se configuró correctamente el filtro de Spring Security.
+- **Flujo de Login y Persistencia de Token:** Implementación de `LoginPage` conectada a `/api/auth/login`. Se programó la lógica de almacenamiento dinámico del JWT (Token): uso de `localStorage` para recordar la sesión por 30 días y `sessionStorage` para sesiones temporales.
+- **Refactorización del Manejo de Errores HTTP:** Mejora en la captura de excepciones en el login, interceptando códigos de estado HTTP específicos (como 401 y 403) para diferenciar entre "Credenciales incorrectas" y "Fallo de conexión/servidor apagado".
