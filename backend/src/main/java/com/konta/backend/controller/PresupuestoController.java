@@ -21,15 +21,15 @@ public class PresupuestoController {
     @GetMapping
     public List<Presupuesto> getPresupuestos(
             @RequestParam(required = false) String estado,
-            @RequestParam(required = false) String nif,
+            @RequestParam(required = false) String clienteNombre,
             Sort sort) {
 
         if (estado != null) {
             return presupuestoService.getPresupuestosByState(estado, sort);
         }
 
-        if (nif != null) {
-            return presupuestoService.getPresupuestosByNif(nif, sort);
+        if (clienteNombre != null) {
+            return presupuestoService.getPresupuestosByClienteNombre(clienteNombre, sort);
         }
 
         return presupuestoService.getPresupuestos(sort);

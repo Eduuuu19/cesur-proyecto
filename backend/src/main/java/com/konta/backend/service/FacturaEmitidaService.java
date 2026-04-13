@@ -39,8 +39,8 @@ public class FacturaEmitidaService {
         return facturaEmitidaRepository.findByEstadoAndUsuario(estado, getUsuarioAutenticado(), sort);
     }
 
-    public List<FacturaEmitida> getFacturasEmitidasByNif(String nif, Sort sort) {
-        return facturaEmitidaRepository.findByClienteNifAndUsuario(nif, getUsuarioAutenticado(), sort);
+    public List<FacturaEmitida> getFacturasEmitidasByClienteNombre(String nombre, Sort sort) {
+        return facturaEmitidaRepository.findByClienteNombreContainingIgnoreCaseAndUsuario(nombre, getUsuarioAutenticado(), sort);
     }
 
     public FacturaEmitida addFacturaEmitida(FacturaEmitida factura) {

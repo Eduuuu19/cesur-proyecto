@@ -34,8 +34,8 @@ public class FacturaRecibidaService {
         return facturaRecibidaRepository.findByEstadoAndUsuario(estado, getUsuarioAutenticado(), sort);
     }
 
-    public List<FacturaRecibida> getFacturasRecibidasByNif(String nif, Sort sort) {
-        return facturaRecibidaRepository.findByProveedorNifAndUsuario(nif, getUsuarioAutenticado(), sort);
+    public List<FacturaRecibida> getFacturasRecibidasByProveedorNombre(String nombre, Sort sort) {
+        return facturaRecibidaRepository.findByProveedorNombreContainingIgnoreCaseAndUsuario(nombre, getUsuarioAutenticado(), sort);
     }
 
     public FacturaRecibida getFacturaRecibidaById(Long id) {
@@ -46,8 +46,8 @@ public class FacturaRecibidaService {
     public FacturaRecibida addFacturaRecibida(FacturaRecibida factura) {
         Usuario usuario = getUsuarioAutenticado();
 
-        if (facturaRecibidaRepository.existsByNumeroFacturaAndUsuario(factura.getNumeroFactura(), usuario)) {
-            throw new IllegalArgumentException("Error: Ya tienes una factura recibida con el número " + factura.getNumeroFactura());
+        if (facturaRecibidaRepository.existsByNumeroFacturaAndProveedorAndUsuario(factura.getNumeroFactura(), factura.getProveedor(), usuario)) {
+            throw new IllegalArgumentException("Error: Ya tienes una factura registrada con el número \"" + factura.getNumeroFactura() + "\" para este proveedor.");
         }
 
         factura.setUsuario(usuario);

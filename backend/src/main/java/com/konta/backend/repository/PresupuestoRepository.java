@@ -11,13 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface PresupuestoRepository extends JpaRepository<Presupuesto, Long> {
-
     boolean existsByNumeroPresupuestoAndUsuario(String numeroPresupuesto, Usuario usuario);
-
     List<Presupuesto> findByUsuario(Usuario usuario, Sort sort);
-
     Optional<Presupuesto> findByIdPresupuestoAndUsuario(Long id, Usuario usuario);
-
     List<Presupuesto> findByEstadoAndUsuario(String estado, Usuario usuario, Sort sort);
-    List<Presupuesto> findByClienteNifAndUsuario(String nif, Usuario usuario, Sort sort);
+    List<Presupuesto> findByClienteNombreContainingIgnoreCaseAndUsuario(String nombre, Usuario usuario, Sort sort);
 }

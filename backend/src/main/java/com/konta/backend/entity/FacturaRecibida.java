@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "facturas_recibidas", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"numero_factura", "id_usuario"})
+        @UniqueConstraint(columnNames = {"numero_factura", "id_proveedor", "id_usuario"})
 })
 public class FacturaRecibida {
 

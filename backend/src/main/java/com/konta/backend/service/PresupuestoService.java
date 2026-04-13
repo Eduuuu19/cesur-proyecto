@@ -82,7 +82,7 @@ public class PresupuestoService {
         return presupuestoRepository.findByEstadoAndUsuario(estado, getUsuarioAutenticado(), sort);
     }
 
-    public List<Presupuesto> getPresupuestosByNif(String nif, Sort sort) {
-        return presupuestoRepository.findByClienteNifAndUsuario(nif, getUsuarioAutenticado(), sort);
+    public List<Presupuesto> getPresupuestosByClienteNombre(String nombre, Sort sort) {
+        return presupuestoRepository.findByClienteNombreContainingIgnoreCaseAndUsuario(nombre, getUsuarioAutenticado(), sort);
     }
 }

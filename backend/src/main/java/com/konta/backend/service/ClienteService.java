@@ -35,7 +35,7 @@ public class ClienteService {
         Usuario usuario = getUsuarioAutenticado();
 
         if (clienteRepository.existsByNifAndUsuario(cliente.getNif(), usuario)){
-            throw new IllegalArgumentException("Error: Ya tienes un cliente registrado con el NIF " + cliente.getNif());
+            throw new IllegalArgumentException("Error: Ya tienes un cliente registrado con el NIF \"" + cliente.getNif() + "\".");
         }
         cliente.setUsuario(usuario);
         return clienteRepository.save(cliente);

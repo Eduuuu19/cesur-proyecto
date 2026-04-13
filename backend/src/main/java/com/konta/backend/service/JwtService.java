@@ -3,6 +3,7 @@ package com.konta.backend.service;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -11,7 +12,8 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "4f6c49e7b8a1c3f9d2e5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7";
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
     public String generarToken(String email, String rol, boolean recordarCredenciales) {
 

@@ -19,14 +19,14 @@ public class FacturaRecibidaController {
     @GetMapping
     public List<FacturaRecibida> getFacturasRecibidas(
             @RequestParam(required = false) String estado,
-            @RequestParam(required = false) String nif,
+            @RequestParam(required = false) String proveedorNombre,
             Sort sort) {
 
         if (estado != null) {
             return facturaRecibidaService.getFacturasRecibidasByState(estado, sort);
         }
-        if (nif != null) {
-            return facturaRecibidaService.getFacturasRecibidasByNif(nif, sort);
+        if (proveedorNombre != null) {
+            return facturaRecibidaService.getFacturasRecibidasByProveedorNombre(proveedorNombre, sort);
         }
 
         return facturaRecibidaService.getFacturasRecibidas(sort);

@@ -167,3 +167,10 @@
 - **Resolución de Políticas de Seguridad:** Diagnóstico y solución de bloqueos de red configurando la clase `SecurityConfig.java` en el backend. Se habilitó el acceso al dominio local de Vite (`127.0.0.1:5173`) y se configuró correctamente el filtro de Spring Security.
 - **Flujo de Login y Persistencia de Token:** Implementación de `LoginPage` conectada a `/api/auth/login`. Se programó la lógica de almacenamiento dinámico del JWT (Token): uso de `localStorage` para recordar la sesión por 30 días y `sessionStorage` para sesiones temporales.
 - **Refactorización del Manejo de Errores HTTP:** Mejora en la captura de excepciones en el login, interceptando códigos de estado HTTP específicos (como 401 y 403) para diferenciar entre "Credenciales incorrectas" y "Fallo de conexión/servidor apagado".
+
+## [13-04-2026] - Integración del Dashboard, Filtros Dinámicos y Refinamiento UI
+### Avances
+- **Mejoras UI Globales:** Ajuste responsivo de buscadores y personalización avanzada de elementos `<select>` nativos con iconos en `SharedPage`.
+- **Arquitectura del Dashboard:** Descentralización del estado en `DashboardPage` para que cada tarjeta gestione sus propias peticiones HTTP de forma independiente.
+- **Integración de Gráficos:** Conexión de `recharts` con los endpoints de estadísticas, añadiendo formateo de euros y renderizado condicional de colores.
+- **Filtros Dinámicos de Fecha:** Implementación de calendarios personalizados (`DateSelector`) con bloqueo automático de meses vacíos basado en los datos del servidor.
