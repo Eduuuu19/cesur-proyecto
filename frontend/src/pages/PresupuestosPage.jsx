@@ -1,124 +1,210 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiPlus, FiSearch, FiFilter } from 'react-icons/fi';
+import api from '../services/axiosConfig';
 import DataTable from '../components/molecules/DataTable';
 import PresupuestosModal from '../components/organisms/PresupuestosModal';
 import styles from './SharedPage.module.css';
 
 export default function PresupuestosPage() {
   
-  // Controlar la apertura del modal
-    const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
-  // Presupuestos de ejemplo para mostrar en la tabla
-  const [presupuestos, setPresupuestos] = useState([
-    {
-      id: 1, numero: "PRE-001", fecha: "22 Mar 2026", 
-      total: 1500.0, estado: "Aceptado", 
-      cliente: { nombre: "Cliente 1", nif: "B00000001" }
-    },
-    {
-      id: 2, numero: "PRE-002", fecha: "25 Mar 2026", 
-      total: 3200.0, estado: "Pendiente", 
-      cliente: { nombre: "Cliente 2", nif: "B00000002" }
-    },
-    {
-      id: 3, numero: "PRE-003", fecha: "02 Abr 2026", 
-      total: 850.0, estado: "Rechazado", 
-      cliente: { nombre: "Cliente 3", nif: "B00000003" }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [presupuestoEditando, setPresupuestoEditando] = useState(null);
+
+  // Estados reales para conexión con Backend
+  const [presupuestos, setPresupuestos] = useState([]);
+  const [clientesList, setClientesList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Filtros y ordenación
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+
+  // Cargar presupuestos desde Java
+  const fetchPresupuestos = async () => {
+    setIsLoading(true);
+    setErrorMessage('');
+    try {
+      const params = {};
+      
+      if (searchTerm) params.clienteNombre = searchTerm;
+      if (statusFilter && statusFilter !== 'todas') params.estado = statusFilter;
+      if (sortConfig.key) params.sort = `${sortConfig.key},${sortConfig.direction}`;
+
+      const response = await api.get('/budgets', { params });
+      setPresupuestos(response.data);
+    } catch (error) {
+      console.error("Error cargando presupuestos:", error);
+      setErrorMessage('No se pudieron cargar los presupuestos.');
+    } finally {
+      setIsLoading(false);
     }
-  ]);
+  };
 
-  // Clientes de ejemplo para el select del modal
-  const mockClientes = [
-    { id: 1, nombre: "Cliente 1", nif: "B00000001" },
-    { id: 2, nombre: "Cliente 2", nif: "B00000002" },
-    { id: 3, nombre: "Cliente 3", nif: "B00000003" }
-  ];
+  // Cargar clientes para el Modal
+  const fetchClientes = async () => {
+    try {
+      const response = await api.get('/customers');
+      setClientesList(response.data);
+    } catch (error) {
+      console.error("Error cargando clientes:", error);
+    }
+  };
 
-  // Configuración de columnas para la tabla
+  useEffect(() => {
+    fetchPresupuestos();
+  }, [searchTerm, statusFilter, sortConfig]);
+
+  useEffect(() => {
+    fetchClientes();
+  }, []);
+
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // Configuración de columnas
   const columns = [
-    { key: 'numero', label: 'Presupuesto', sortable: true },
+    { key: 'numeroPresupuesto', label: 'Presupuesto', sortable: true },
     { key: 'fecha', label: 'Fecha', sortable: true },
-    { key: 'cliente', label: 'Cliente', render: (row) => row.cliente.nombre },
-    { key: 'nif', label: 'NIF', render: (row) => row.cliente.nif },
-    { key: 'total', label: 'Importe', render: (row) => `${row.total.toLocaleString('es-ES')}€` },
+    { key: 'cliente', label: 'Cliente', render: (row) => row.cliente?.nombre || 'Desconocido' },
+    { key: 'nif', label: 'NIF', render: (row) => row.cliente?.nif || 'N/A' },
+    { key: 'total', label: 'Total', render: (row) => `${row.total.toLocaleString('es-ES', { minimumFractionDigits: 2 })}€`, sortable: true },
     { key: 'estado', label: 'Estado', sortable: true }
   ];
 
-  // Función de ejemplo para simular la creación de un nuevo presupuesto a partir de los datos del modal
-  const handleSavePresupuesto = (formData) => {
-    const totalCalculado = parseFloat(formData.baseImponible) * (1 + parseFloat(formData.iva) / 100);
-    const clienteEncontrado = mockClientes.find(c => c.id.toString() === formData.clienteId);
-
-    const nuevoPresupuesto = {
-      id: Date.now(),
-      numeroPresupuesto: formData.numeroPresupuesto,
-      fecha: formData.fechaEmision,
-      total: totalCalculado,
-      estado: formData.estado,
-      cliente: clienteEncontrado
-    };
-
-    setPresupuestos([nuevoPresupuesto, ...presupuestos]);
-    setIsModalOpen(false);
+  const handleOpenNew = () => {
+    if (clientesList.length === 0) {
+      const irAClientes = window.confirm(
+        "No puedes crear un presupuesto porque aún no tienes clientes registrados. ¿Deseas ir a la sección de Clientes para crear uno ahora?"
+      );
+      if (irAClientes) {
+        navigate('/clientes'); 
+      }
+      return; 
+    }
+    setPresupuestoEditando(null);
+    setIsModalOpen(true);
   };
 
-  // Funciones para los botones
-  const handleEdit = (row) => console.log("Editar presupuesto:", row);
-  const handleDelete = (row) => console.log("Borrar presupuesto:", row);
+  const handleEdit = (row) => {
+    setPresupuestoEditando(row);
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+    setPresupuestoEditando(null);
+  };
+
+  const handleDelete = async (row) => {
+    const confirmar = window.confirm(`¿Estás seguro de que quieres eliminar el presupuesto ${row.numeroPresupuesto}?`);
+    if (confirmar) {
+      try {
+        await api.delete(`/budgets/${row.idPresupuesto}`);
+        fetchPresupuestos();
+      } catch (error) {
+        console.error("Error borrando presupuesto:", error);
+        setErrorMessage("No se pudo eliminar el presupuesto.");
+      }
+    }
+  };
+
+  const handleSavePresupuesto = async (datosParaJava) => {
+    try {
+      if (presupuestoEditando) {
+        await api.put(`/budgets/${presupuestoEditando.idPresupuesto}`, datosParaJava);
+      } else {
+        await api.post('/budgets', datosParaJava);
+      }
+      handleClose();
+      fetchPresupuestos();
+    } catch (error) {
+      console.error("Error al guardar presupuesto:", error);
+      const mensajeBackend = error.response?.data?.error || "Error de conexión al intentar guardar.";
+      throw new Error(mensajeBackend);
+    }
+  };
 
   return (
-    
     <div className={styles.pageContainer}>
 
       {/* Migas de pan y Título */}
       <div className={styles.breadcrumbs}>Ingresos &gt; Presupuestos</div>
       <h1 className={styles.title}>Presupuestos</h1>
 
+      {errorMessage && <div className={styles.alertError}>{errorMessage}</div>}
+
       {/* Contenedor Principal */}
       <div className={styles.contentCard}>
 
-        {/* Toolbar Superior: Filtros y Botón de Añadir */}
+        {/* Filtros y Botón de Añadir */}
         <div className={styles.toolbar}>
-          <button className={styles.btnAdd} onClick={() => setIsModalOpen(true)}>
+          <button className={styles.btnAdd} onClick={handleOpenNew}>
             <FiPlus size={18} /> Añadir presupuesto
           </button>
 
           <div className={styles.filters}>
-            {/* Buscador por NIF */}
+            {/* Buscador por Nombre */}
             <div className={styles.searchBox}>
               <FiSearch className={styles.searchIcon} />
-              <input type="text" placeholder="Buscar por NIF..." className={styles.searchInput} />
+              <input 
+                type="text" 
+                placeholder="Buscar por nombre..." 
+                className={styles.searchInput} 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
 
             {/* Filtro por Estado */}
             <div className={styles.selectBox}>
               <FiFilter className={styles.filterIcon} />
-              <select className={styles.statusSelect} defaultValue="">
+              <select 
+                className={styles.statusSelect} 
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
                 <option value="" disabled>Estado</option>
                 <option value="todas">Todos</option>
-                <option value="aceptado">Aceptado</option>
-                <option value="pendiente">Pendiente</option>
-                <option value="rechazado">Rechazado</option>
+                <option value="Aceptado">Aceptado</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Rechazado">Rechazado</option>
               </select>
             </div>
           </div>
         </div>
 
         {/* Tabla de Datos */}
-        <DataTable 
-          data={presupuestos}
-          columns={columns} 
-          onEdit={handleEdit} 
-          onDelete={handleDelete} />
+        {isLoading ? (
+            <div className={styles.loadingState}>Cargando presupuestos...</div>
+        ) : (
+            <DataTable 
+              data={presupuestos}
+              columns={columns} 
+              onEdit={handleEdit} 
+              onDelete={handleDelete}
+              onSort={handleSort}
+              currentSort={sortConfig}
+            />
+        )}
       </div>
 
       {/* Modal para añadir/editar presupuesto */}
       <PresupuestosModal 
         isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        onClose={handleClose} 
         onSave={handleSavePresupuesto}
-        clientes={mockClientes}
+        clientes={clientesList}
+        initialData={presupuestoEditando}
       />
 
     </div>

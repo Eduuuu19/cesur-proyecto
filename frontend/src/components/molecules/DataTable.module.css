@@ -31,7 +31,7 @@
 .sortIcons {
   display: flex;
   flex-direction: column;
-  color: var(--color-gray-400);
+  color: var(--color-gray-500);
   cursor: pointer;
 }
 
@@ -41,6 +41,12 @@
 
 .sortIcons:hover {
   color: var(--color-primary-500);
+}
+
+/* Estilos para las cabeceras ordenables */
+.sortableHeader {
+    cursor: pointer;
+    user-select: none; 
 }
 
 /* Celdas */
@@ -176,3 +182,5 @@
   font-weight: bold;
   color: var(--color-gray-800);
 }
+
+

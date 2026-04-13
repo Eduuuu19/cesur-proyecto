@@ -5,7 +5,7 @@ import FormInput from '../molecules/FormInput';
 import FormSelect from '../molecules/FormSelect';
 import styles from './DocumentModal.module.css';
 
-export default function FacturasRecibidasModal({ isOpen, onClose, onSave, proveedores }) {
+export default function FacturasRecibidasModal({ isOpen, onClose, onSave, proveedores, initialData }) {
 
   // ESTADO DEL FORMULARIO
   const [formData, setFormData] = useState({
@@ -21,21 +21,32 @@ export default function FacturasRecibidasModal({ isOpen, onClose, onSave, provee
   const [errors, setErrors] = useState({});
   const [backendError, setBackendError] = useState('');
 
-  // LIMPIAR EL FORMULARIO AL ABRIR
+  // FUNCIÓN DEL FORMULARIO AL ABRIR
   useEffect(() => {
     if (isOpen) {
-      setFormData({ proveedorId: '', numeroFactura: '', fechaEmision: '', estado: 'Pendiente', baseImponible: '', iva: '21' });
+      if (initialData) {
+        setFormData({
+          proveedorId: initialData.proveedor?.idProveedor?.toString() || '',
+          numeroFactura: initialData.numeroFactura,
+          fechaEmision: initialData.fecha,
+          estado: initialData.estado,
+          baseImponible: (initialData.total / 1.21).toFixed(2),
+          iva: '21'
+        });
+      } else {
+        setFormData({ proveedorId: '', numeroFactura: '', fechaEmision: '', estado: 'Pendiente', baseImponible: '', iva: '21' });
+      }
       setErrors({});
       setBackendError('');
     }
-  }, [isOpen]);
+  }, [isOpen, initialData]);
 
   // CÁLCULO EN TIEMPO REAL DEL TOTAL DE LA FACTURA
   const totalCalculado = formData.baseImponible
     ? (parseFloat(formData.baseImponible) * (1 + parseFloat(formData.iva) / 100)).toFixed(2)
     : '0.00';
 
-  // MANEJADOR DE CAMBIOS EN LOS CAMPOS DEL FORMULARIO
+  // MANEJADOR DE CAMBIOS EN LOS CAMPOS DEL FORMULARIO  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -44,7 +55,7 @@ export default function FacturasRecibidasModal({ isOpen, onClose, onSave, provee
   };
 
   // VALIDACIÓN Y GUARDADO
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newErrors = {};
     if (!formData.proveedorId) newErrors.proveedorId = 'Debe seleccionar un proveedor';
     if (!formData.numeroFactura.trim()) newErrors.numeroFactura = 'El número de la factura es obligatorio';
@@ -57,24 +68,37 @@ export default function FacturasRecibidasModal({ isOpen, onClose, onSave, provee
       return;
     }
 
-    // SIMULACIÓN DE ERROR DEL BACKEND
-    if (formData.numeroFactura.toUpperCase() === 'A-992') {
-      setBackendError('Ya existe una factura recibida con este número. Por favor, revisa los datos.');
-      return;
-    }
+    const invoicePayload = {
+      numeroFactura: formData.numeroFactura,
+      fecha: formData.fechaEmision,
+      baseImponible: parseFloat(formData.baseImponible),
+      iva: parseFloat(formData.iva),
+      estado: formData.estado,
+      proveedor: {
+        idProveedor: parseInt(formData.proveedorId)
+      }
+    };
 
-    onSave(formData);
+    try {
+      setBackendError('');
+      await onSave(invoicePayload);
+    } catch (error) {
+      setBackendError(error.message);
+    }
   };
 
   // OPCIONES PARA LOS SELECTS
-  const proveedoresOptions = proveedores?.map(prov => ({ value: prov.id, label: `${prov.nombre} (${prov.cif})` })) || [];
+  const proveedoresOptions = proveedores?.map(prov => ({ 
+    value: prov.idProveedor, 
+    label: `${prov.nombre} (${prov.nif})` 
+  })) || [];
+
   const estadoOptions = [
     { value: 'Pendiente', label: 'Pendiente' },
     { value: 'Pagada', label: 'Pagada' },
     { value: 'Vencida', label: 'Vencida' }
   ];
 
-  // OPCIONES DE IVA
   const ivaOptions = [
     { value: '21', label: '21% (General)' },
     { value: '10', label: '10% (Reducido)' },
@@ -85,13 +109,12 @@ export default function FacturasRecibidasModal({ isOpen, onClose, onSave, provee
     <GenericModal
       isOpen={isOpen}
       onClose={onClose}
-      title="Añadir Factura Recibida"
+      title={initialData ? "Editar Factura Recibida" : "Añadir Factura Recibida"}
       actionPrimaryLabel="Guardar"
       actionPrimaryOnclick={handleSubmit}
       actionSecondaryLabel="Cancelar"
       actionSecondaryOnclick={onClose}
     >
-
       {backendError && (
         <div className={styles.alertDanger}>
           <FiAlertCircle size={18} />
@@ -99,26 +122,20 @@ export default function FacturasRecibidasModal({ isOpen, onClose, onSave, provee
         </div>
       )}
 
-      {/* SECCIÓN 1: DATOS GENERALES */}
       <section className={styles.section}>
         <h3 className={styles.sectionTitle}>Datos Generales</h3>
-
         <div className={styles.formStack}>
-
           <div className={styles.grid2}>
             <FormSelect label="Seleccione un proveedor" name="proveedorId" required={true} value={formData.proveedorId} onChange={handleChange} options={proveedoresOptions} error={errors.proveedorId} />
             <FormInput label="Número de Factura" name="numeroFactura" placeholder="Ej: FAC-2026/04" required={true} value={formData.numeroFactura} onChange={handleChange} error={errors.numeroFactura} />
           </div>
-
           <div className={styles.grid2}>
             <FormInput type="date" label="Fecha de Emisión" name="fechaEmision" required={true} value={formData.fechaEmision} onChange={handleChange} error={errors.fechaEmision} />
             <FormSelect label="Estado" name="estado" required={true} value={formData.estado} onChange={handleChange} options={estadoOptions} error={errors.estado} />
           </div>
-
         </div>
       </section>
 
-      {/* SECCIÓN 2: CÁLCULO ECONÓMICO */}
       <section className={styles.section}>
         <h3 className={styles.sectionTitle}>Cálculo Económico</h3>
         <div className={styles.calculoContainer}>

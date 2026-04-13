@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './LoginPage.module.css';
-import { Link, useNavigate } from 'react-router-dom'; // NUEVO: Añadido useNavigate
-import axios from 'axios'; // NUEVO: Añadido axios para la conexión
+import { Link, useNavigate } from 'react-router-dom';
+import api from '../services/axiosConfig';
 import logo from '../assets/logo.png';
 import Button from '../components/atoms/Button';
 import Checkbox from '../components/atoms/Checkbox';
@@ -36,7 +36,7 @@ export default function LoginPage() {
     try {
         setIsLoading(true);
         
-        const response = await axios.post('http://localhost:8080/api/auth/login', payload);
+        const response = await api.post('/auth/login', payload);
         const token = response.data.token;
 
         // Guardamr el token en el almacenamiento adecuado según la opción de "Recordar por 30 días"

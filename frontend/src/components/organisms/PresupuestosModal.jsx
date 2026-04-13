@@ -5,7 +5,7 @@ import FormInput from '../molecules/FormInput';
 import FormSelect from '../molecules/FormSelect';
 import styles from './DocumentModal.module.css';
 
-export default function PresupuestosModal({ isOpen, onClose, onSave, clientes }) {
+export default function PresupuestosModal({ isOpen, onClose, onSave, clientes, initialData }) {
   // ESTADO DEL FORMULARIO
   const [formData, setFormData] = useState({
     clienteId: '',
@@ -20,14 +20,25 @@ export default function PresupuestosModal({ isOpen, onClose, onSave, clientes })
   const [errors, setErrors] = useState({});
   const [backendError, setBackendError] = useState('');
 
-  // LIMPIAR EL FORMULARIO AL ABRIR
+  // RELLENAR O LIMPIAR EL FORMULARIO AL ABRIR
   useEffect(() => {
     if (isOpen) {
-      setFormData({ clienteId: '', numeroPresupuesto: '', fechaEmision: '', estado: 'Pendiente', baseImponible: '', iva: '21' });
+      if (initialData) {
+        setFormData({
+          clienteId: initialData.cliente?.idCliente?.toString() || '',
+          numeroPresupuesto: initialData.numeroPresupuesto,
+          fechaEmision: initialData.fecha,
+          estado: initialData.estado,
+          baseImponible: (initialData.total / 1.21).toFixed(2),
+          iva: '21'
+        });
+      } else {
+        setFormData({ clienteId: '', numeroPresupuesto: '', fechaEmision: '', estado: 'Pendiente', baseImponible: '', iva: '21' });
+      }
       setErrors({});
       setBackendError('');
     }
-  }, [isOpen]);
+  }, [isOpen, initialData]);
 
   // CÁLCULO EN TIEMPO REAL DEL TOTAL DEL PRESUPUESTO
   const totalCalculado = formData.baseImponible
@@ -42,8 +53,8 @@ export default function PresupuestosModal({ isOpen, onClose, onSave, clientes })
     if (backendError) setBackendError('');
   };
 
-  // VALIDACIÓN Y GUARDADO
-  const handleSubmit = () => {
+  // VALIDACIÓN Y GUARDADO 
+  const handleSubmit = async () => {
     const newErrors = {};
     if (!formData.clienteId) newErrors.clienteId = 'Debe seleccionar un cliente';
     if (!formData.numeroPresupuesto.trim()) newErrors.numeroPresupuesto = 'El número de presupuesto es obligatorio';
@@ -56,17 +67,27 @@ export default function PresupuestosModal({ isOpen, onClose, onSave, clientes })
       return;
     }
 
-    // SIMULACIÓN DE ERROR DEL BACKEND
-    if (formData.numeroPresupuesto.toUpperCase() === 'PRE-001') {
-      setBackendError('Ya existe un presupuesto con este número. Por favor, introduce uno diferente.');
-      return;
-    }
+    const invoicePayload = {
+      numeroPresupuesto: formData.numeroPresupuesto,
+      fecha: formData.fechaEmision,
+      baseImponible: parseFloat(formData.baseImponible),
+      iva: parseFloat(formData.iva),
+      estado: formData.estado,
+      cliente: {
+        idCliente: parseInt(formData.clienteId)
+      }
+    };
 
-    onSave(formData);
+    try {
+      setBackendError('');
+      await onSave(invoicePayload);
+    } catch (error) {
+      setBackendError(error.message);
+    }
   };
 
   // OPCIONES PARA LOS SELECTS
-  const clientesOptions = clientes?.map(cli => ({ value: cli.id, label: `${cli.nombre} (${cli.nif})` })) || [];
+  const clientesOptions = clientes?.map(cli => ({ value: cli.idCliente, label: `${cli.nombre} (${cli.nif})` })) || [];
   const estadoOptions = [
     { value: 'Pendiente', label: 'Pendiente' },
     { value: 'Aceptado', label: 'Aceptado' },
@@ -83,7 +104,7 @@ export default function PresupuestosModal({ isOpen, onClose, onSave, clientes })
     <GenericModal
       isOpen={isOpen}
       onClose={onClose}
-      title="Añadir Presupuesto"
+      title={initialData ? "Editar Presupuesto" : "Añadir Presupuesto"}
       actionPrimaryLabel="Guardar"
       actionPrimaryOnclick={handleSubmit}
       actionSecondaryLabel="Cancelar"

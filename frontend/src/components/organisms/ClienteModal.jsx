@@ -7,8 +7,8 @@ import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 import styles from './DocumentModal.module.css';
 
-export default function ClienteModal({ isOpen, onClose, onSave }) {
-
+export default function ClienteModal({ isOpen, onClose, onSave, initialData }) {    
+    
     // ESTADO DEL FORMULARIO 
     const [formData, setFormData] = useState({
         nombre: '',
@@ -23,14 +23,18 @@ export default function ClienteModal({ isOpen, onClose, onSave }) {
     const [errors, setErrors] = useState({});
     const [backendError, setBackendError] = useState('');
 
-    // LIMPIAR EL FORMULARIO AL ABRIR
+    // LIMPIAR O RELLENAR EL FORMULARIO AL ABRIR
     useEffect(() => {
         if (isOpen) {
-            setFormData({ nombre: '', nif: '', direccion: '', email: '', telefono: '', estado: 'Activo' });
+            if (initialData) {
+                setFormData(initialData);
+            } else {
+                setFormData({ nombre: '', nif: '', direccion: '', email: '', telefono: '', estado: 'Activo' });
+            }
             setErrors({});
             setBackendError('');
         }
-    }, [isOpen]);
+    }, [isOpen, initialData]); 
 
     // MANEJADOR DE CAMBIOS EN LOS CAMPOS DEL FORMULARIO
     const handleChange = (e) => {
@@ -41,7 +45,7 @@ export default function ClienteModal({ isOpen, onClose, onSave }) {
     };
 
     // VALIDACIÓN Y GUARDADO
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const newErrors = {};
         if (!formData.nombre.trim()) newErrors.nombre = 'El nombre o Razón Social es obligatorio';
         if (!formData.nif.trim()) newErrors.nif = 'El NIF/CIF es obligatorio';
@@ -57,13 +61,13 @@ export default function ClienteModal({ isOpen, onClose, onSave }) {
             return;
         }
 
-        // SIMULACIÓN DE ERROR 
-        if (formData.nif.toUpperCase() === 'B12345678') {
-            setBackendError('Error: Ya tienes un cliente registrado con el NIF B12345678.');
-            return;
+        try {
+            setBackendError('');
+            await onSave(formData); 
+        } catch (error) {
+            setBackendError(error.message);
         }
 
-        onSave(formData);
     };
 
     // OPCIONES PARA LOS SELECTS

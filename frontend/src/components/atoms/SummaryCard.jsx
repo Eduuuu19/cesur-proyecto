@@ -1,9 +1,18 @@
-import React from 'react';
-import { FiCalendar, FiChevronDown } from 'react-icons/fi';
-import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis } from 'recharts'; import DateSelector from './DateSelector';
+import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis } from 'recharts'; 
+import DateSelector from './DateSelector';
 import styles from './SummaryCard.module.css';
 
-export default function SummaryCard({ title, amount, variant = 'primary', data = [], chartType = 'area' }) {
+// CORRECCIÓN: Añadimos fechasDisponibles aquí abajo
+export default function SummaryCard({ 
+  title, 
+  amount, 
+  variant = 'primary', 
+  data = [], 
+  chartType = 'area',
+  selectedDate, 
+  onDateChange,
+  fechasDisponibles = {}
+}) {
 
   let amountColorClass = styles.amountPrimary;
   let chartColor = "var(--color-primary-500)";
@@ -26,16 +35,22 @@ export default function SummaryCard({ title, amount, variant = 'primary', data =
       </div>
 
       <div className={styles.cardBody}>
-        <DateSelector type="month" />
+        
+        <div className={styles.dateSelectorContainer}>
+          <DateSelector 
+            type="month" 
+            selectedDate={selectedDate} 
+            onChange={onDateChange} 
+            fechasDisponibles={fechasDisponibles} // Ahora sí tendrá valor
+          />
+        </div>
 
         <span className={`${styles.amount} ${amountColorClass}`}>
           {amount}
         </span>
 
         <div className={styles.miniChartWrapper}>
-
           <ResponsiveContainer width={isBarChart ? "40%" : "100%"} height="100%">
-
             {isBarChart ? (
               <BarChart data={formattedData}>
                 <XAxis dataKey="name" hide={true} />
@@ -44,18 +59,9 @@ export default function SummaryCard({ title, amount, variant = 'primary', data =
               </BarChart>
             ) : (
               <AreaChart data={formattedData}>
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  stroke={chartColor}
-                  fill={chartColor}
-                  fillOpacity={0.15}
-                  strokeWidth={2}
-                  isAnimationActive={true}
-                />
+                <Area type="monotone" dataKey="value" stroke={chartColor} fill={chartColor} fillOpacity={0.15} strokeWidth={2} isAnimationActive={true} />
               </AreaChart>
             )}
-
           </ResponsiveContainer>
         </div>
 

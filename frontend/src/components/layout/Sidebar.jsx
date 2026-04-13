@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import {
   FiPieChart,
   FiDatabase,
@@ -22,6 +22,8 @@ export default function Sidebar() {
 
   // ESTADO PARA CONTROLAR COLAPSO DE LA BARRA
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const navigate = useNavigate();
 
   // funcion para cerrar los acordeones al colapsar la barra
   const handleToggleSidebar = () => {
@@ -51,6 +53,14 @@ export default function Sidebar() {
     }
   };
 
+  // función para cerrar sesión
+  const handleLogout = (e) => {
+    e.preventDefault(); // Evitamos que el link recargue la página por defecto
+    localStorage.removeItem('konta_token'); // Vaciamos bolsillo principal
+    sessionStorage.removeItem('konta_token'); // Vaciamos bolsillo temporal
+    navigate('/login'); // Expulsamos al usuario al login
+  };
+
   // FÓRMULAS DE ESTILO
   const navLinkClass = ({ isActive }) =>
     isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink;
@@ -67,11 +77,11 @@ export default function Sidebar() {
           <img src={logo} alt="Konta Logo" className={styles.logo} />
           {!isCollapsed && <span className={styles.logoText}>Konta</span>}
         </div>
-        
+
         <button className={styles.toggleBtn} onClick={handleToggleSidebar}>
           <FiMenu size={24} />
         </button>
-        
+
       </div>
 
       <nav className={styles.navMenu}>
@@ -129,8 +139,8 @@ export default function Sidebar() {
           <FiSettings size={20} className={styles.icon} />
           {!isCollapsed && <span>Ajustes</span>}
         </NavLink>
-        
-        <Link to="/login" className={styles.navLink}>
+
+        <Link to="/login" className={styles.navLink} onClick={handleLogout}>
           <FiLogOut size={20} className={styles.icon} />
           {!isCollapsed && <span>Cerrar Sesión</span>}
         </Link>

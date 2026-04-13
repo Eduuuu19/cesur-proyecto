@@ -54,7 +54,14 @@
   gap: 16px;
 }
 
-.searchBox, .selectBox {
+.searchBox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 280px;
+}
+
+.selectBox {
   position: relative;
   display: flex;
   align-items: center;
@@ -75,6 +82,10 @@
   color: var(--color-gray-700);
 }
 
+.searchInput{
+  width: 100%;
+}
+
 .searchInput:focus, .statusSelect:focus {
   border-color: var(--color-primary-500);
 }
@@ -82,4 +93,24 @@
 .statusSelect {
   cursor: pointer;
   appearance: auto;
+}
+
+
+/* Estilos de alerta */
+.alertError {
+  color: #b91c1c;
+  background-color: #fee2e2;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.loadingState {
+  text-align: center;
+  padding: 20px;
+  color: #64748b;
+  font-weight: 500;
+  font-style: italic;
 }

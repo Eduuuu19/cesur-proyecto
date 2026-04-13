@@ -5,7 +5,7 @@ import FormInput from '../molecules/FormInput';
 import FormSelect from '../molecules/FormSelect';
 import styles from './DocumentModal.module.css';
 
-export default function FacturasEmitidasModal({ isOpen, onClose, onSave, clientes, edit }) {
+export default function FacturasEmitidasModal({ isOpen, onClose, onSave, clientes, initialData }) {
   // ESTADO DEL FORMULARIO
   const [formData, setFormData] = useState({
     clienteId: '',
@@ -23,24 +23,24 @@ export default function FacturasEmitidasModal({ isOpen, onClose, onSave, cliente
   // FUNCIÓN DEL FORMULARIO AL ABRIR
   useEffect(() => {
     if (isOpen) {
-      if (edit) {
-        // MODO EDICIÓN: Rellenar las cajas con los datos de la fila
+      if (initialData) {
         setFormData({
-          clienteId: facturaEditando.cliente.id.toString(),
-          numeroFactura: facturaEditando.numeroFactura,
-          fechaEmision: facturaEditando.fecha,
-          estado: facturaEditando.estado,
-          baseImponible: (facturaEditando.total / 1.21).toFixed(2),
+          // CAMBIO AQUÍ: Usamos idCliente en lugar de id
+          clienteId: initialData.cliente?.idCliente?.toString() || '',
+          numeroFactura: initialData.numeroFactura,
+          fechaEmision: initialData.fecha,
+          estado: initialData.estado,
+          // Calculamos la base imponible a partir del total que manda Java
+          baseImponible: (initialData.total / 1.21).toFixed(2),
           iva: '21'
         });
       } else {
-        // MODO CREACIÓN: Todo en blanco
         setFormData({ clienteId: '', numeroFactura: '', fechaEmision: '', estado: 'Pendiente', baseImponible: '', iva: '21' });
       }
       setErrors({});
       setBackendError('');
     }
-  }, [isOpen, edit]);
+  }, [isOpen, initialData]);
 
   // CÁLCULO EN TIEMPO REAL DEL TOTAL DE LA FACTURA
   const totalCalculado = formData.baseImponible
@@ -56,7 +56,8 @@ export default function FacturasEmitidasModal({ isOpen, onClose, onSave, cliente
   };
 
   // VALIDACIÓN Y GUARDADO
-  const handleSubmit = () => {
+  // VALIDACIÓN Y GUARDADO
+  const handleSubmit = async () => {
     const newErrors = {};
     if (!formData.clienteId) newErrors.clienteId = 'Debe seleccionar un cliente';
     if (!formData.numeroFactura.trim()) newErrors.numeroFactura = 'El número de la factura es obligatorio';
@@ -69,17 +70,27 @@ export default function FacturasEmitidasModal({ isOpen, onClose, onSave, cliente
       return;
     }
 
-    if (!facturaEditando && formData.numeroFactura.toUpperCase() === 'F001') {
-      setBackendError('Ya existe una factura con este número.');
-      return;
-    }
+    const invoicePayload = {
+      numeroFactura: formData.numeroFactura,
+      fecha: formData.fechaEmision,
+      baseImponible: parseFloat(formData.baseImponible),
+      iva: parseFloat(formData.iva),
+      estado: formData.estado,
+      cliente: {
+        idCliente: parseInt(formData.clienteId)
+      }
+    };
 
-    onSave(formData);
+    try {
+      setBackendError('');
+      await onSave(invoicePayload);
+    } catch (error) {
+      setBackendError(error.message);
+    }
   };
 
   // OPCIONES PARA LOS SELECTS
-  const clientesOptions = clientes?.map(cli => ({ value: cli.id, label: `${cli.nombre} (${cli.nif})` })) || [];
-  const estadoOptions = [
+  const clientesOptions = clientes?.map(cli => ({ value: cli.idCliente, label: `${cli.nombre} (${cli.nif})` })) || []; const estadoOptions = [
     { value: 'Pendiente', label: 'Pendiente' },
     { value: 'Pagada', label: 'Pagada' },
     { value: 'Vencida', label: 'Vencida' }
@@ -96,7 +107,7 @@ export default function FacturasEmitidasModal({ isOpen, onClose, onSave, cliente
     <GenericModal
       isOpen={isOpen}
       onClose={onClose}
-      title={edit ? "Editar Factura" : "Añadir Factura Emitida"}
+      title={initialData ? "Editar Factura" : "Añadir Factura Emitida"}
       actionPrimaryLabel="Guardar"
       actionPrimaryOnclick={handleSubmit}
       actionSecondaryLabel="Cancelar"

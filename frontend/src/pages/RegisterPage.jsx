@@ -7,8 +7,7 @@ import Button from '../components/atoms/Button';
 import Checkbox from '../components/atoms/Checkbox';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import axios from 'axios';
-
+import api from '../services/axiosConfig';
 
 
 export default function RegisterPage() {
@@ -49,7 +48,7 @@ export default function RegisterPage() {
         try {
             setIsLoading(true);
 
-            const response = await axios.post('http://localhost:8080/api/auth/register', payload);
+            const response = await api.post('/auth/register', payload);
 
             setSuccessMessage('¡Cuenta creada con éxito!');
 

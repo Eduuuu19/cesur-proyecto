@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import { es } from 'date-fns/locale';
 import "react-datepicker/dist/react-datepicker.css";
@@ -21,19 +21,32 @@ const CustomDateButton = forwardRef(({ onClick, isMonthMode, date }, ref) => (
   </div>
 ));
 
-export default function DateSelector({ type = 'month', minDate = null }) {
-  const [startDate, setStartDate] = useState(new Date());
+export default function DateSelector({ type = 'month', selectedDate, onChange, fechasDisponibles = {} }) {
   const isMonthMode = type === 'month';
+
+  const esMesValido = (date) => {
+    const año = date.getFullYear().toString();
+    const mes = (date.getMonth() + 1);
+    
+    if (!fechasDisponibles[año]) return false;
+    return fechasDisponibles[año].includes(mes);
+  };
+
+  const esAñoValido = (date) => {
+    const año = date.getFullYear().toString();
+    return !!fechasDisponibles[año];
+  };
 
   return (
     <DatePicker
-      selected={startDate}
-      onChange={(date) => setStartDate(date)}
+      selected={selectedDate}
+      onChange={onChange}
       showMonthYearPicker={isMonthMode}
       showYearPicker={!isMonthMode}
-      minDate={minDate}
+      filterDate={isMonthMode ? esMesValido : esAñoValido}
+      dateFormat={isMonthMode ? "MM/yyyy" : "yyyy"}
       locale="es"
-      customInput={<CustomDateButton isMonthMode={isMonthMode} date={startDate} />}
+      customInput={<CustomDateButton isMonthMode={isMonthMode} date={selectedDate} />}
     />
   );
 }

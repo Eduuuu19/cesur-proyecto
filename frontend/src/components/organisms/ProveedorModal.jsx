@@ -3,12 +3,12 @@ import { FiAlertCircle } from 'react-icons/fi';
 import GenericModal from '../atoms/GenericModal';
 import FormInput from '../molecules/FormInput';
 import FormSelect from '../molecules/FormSelect';
-import styles from './DocumentModal.module.css';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
+import styles from './DocumentModal.module.css';
 
-export default function ProveedorModal({ isOpen, onClose, onSave }) {
-
+export default function ProveedorModal({ isOpen, onClose, onSave, initialData }) {    
+    
     // ESTADO DEL FORMULARIO 
     const [formData, setFormData] = useState({
         nombre: '',
@@ -19,18 +19,22 @@ export default function ProveedorModal({ isOpen, onClose, onSave }) {
         estado: 'Activo'
     });
 
-    // ESTADO DE ERRORES
+    // ESTADO DE ERRORES   
     const [errors, setErrors] = useState({});
     const [backendError, setBackendError] = useState('');
 
-    // LIMPIAR EL FORMULARIO AL ABRIR
+    // LIMPIAR O RELLENAR EL FORMULARIO AL ABRIR
     useEffect(() => {
         if (isOpen) {
-            setFormData({ nombre: '', nif: '', direccion: '', email: '', telefono: '', estado: 'Activo' });
+            if (initialData) {
+                setFormData(initialData);
+            } else {
+                setFormData({ nombre: '', nif: '', direccion: '', email: '', telefono: '', estado: 'Activo' });
+            }
             setErrors({});
             setBackendError('');
         }
-    }, [isOpen]);
+    }, [isOpen, initialData]); 
 
     // MANEJADOR DE CAMBIOS EN LOS CAMPOS DEL FORMULARIO
     const handleChange = (e) => {
@@ -41,12 +45,13 @@ export default function ProveedorModal({ isOpen, onClose, onSave }) {
     };
 
     // VALIDACIÓN Y GUARDADO
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const newErrors = {};
-        if (!formData.nombre.trim()) newErrors.nombre = 'La Razón Social es obligatoria';
-        if (!formData.nif.trim()) newErrors.nif = 'El CIF/NIF es obligatorio';
+        if (!formData.nombre.trim()) newErrors.nombre = 'El nombre o Razón Social es obligatorio';
+        if (!formData.nif.trim()) newErrors.nif = 'El NIF/CIF es obligatorio';
         if (!formData.direccion.trim()) newErrors.direccion = 'La dirección es obligatoria';
 
+        // Validación básica de email 
         if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
             newErrors.email = 'El formato del email no es válido';
         }
@@ -56,13 +61,13 @@ export default function ProveedorModal({ isOpen, onClose, onSave }) {
             return;
         }
 
-        // Simulamos un CIF duplicado distinto para proveedores
-        if (formData.nif.toUpperCase() === 'A98765432') {
-            setBackendError('Error: Ya tienes un proveedor registrado con el CIF A98765432.');
-            return;
+        try {
+            setBackendError('');
+            await onSave(formData); 
+        } catch (error) {
+            setBackendError(error.message);
         }
 
-        onSave(formData);
     };
 
     // OPCIONES PARA LOS SELECTS
@@ -89,23 +94,27 @@ export default function ProveedorModal({ isOpen, onClose, onSave }) {
                 </div>
             )}
 
+            {/* SECCIÓN 1: DATOS FISCALES */}
             <section className={styles.section}>
                 <h3 className={styles.sectionTitle}>Datos Fiscales</h3>
-                <div className={styles.formStack}>
-                    <FormInput label="Razón Social / Nombre" name="nombre" placeholder="Ej: Suministros Globales S.A." required={true} value={formData.nombre} onChange={handleChange} error={errors.nombre} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    <FormInput label="Razón Social / Nombre" name="nombre" placeholder="Ej: Tech Solutions S.L." required={true} value={formData.nombre} onChange={handleChange} error={errors.nombre} />
+
                     <div className={styles.grid2}>
-                        <FormInput label="CIF / NIF" name="nif" placeholder="Ej: A98765432" required={true} value={formData.nif} onChange={handleChange} error={errors.nif} />
+                        <FormInput label="NIF / CIF" name="nif" placeholder="Ej: B12345678" required={true} value={formData.nif} onChange={handleChange} error={errors.nif} />
                         <FormInput label="Dirección Fiscal" name="direccion" placeholder="Calle, Número, Ciudad..." required={true} value={formData.direccion} onChange={handleChange} error={errors.direccion} />
                     </div>
                 </div>
             </section>
 
+            {/* SECCIÓN 2: CONTACTO */}
             <section className={styles.section}>
                 <h3 className={styles.sectionTitle}>Contacto</h3>
                 <div className={styles.formStack}>
-                    <FormInput type="email" label="Email" name="email" placeholder="proveedores@empresa.com" value={formData.email} onChange={handleChange} error={errors.email} />
+                    <FormInput type="email" label="Email" name="email" placeholder="ejemplo@correo.com" value={formData.email} onChange={handleChange} error={errors.email} />
 
                     <div className={styles.grid2}>
+
                         <div className={styles.phoneContainer}>
                             <label className={styles.phoneLabel}>Teléfono</label>
                             <PhoneInput
@@ -118,6 +127,7 @@ export default function ProveedorModal({ isOpen, onClose, onSave }) {
                                 defaultCountry="ES"
                             />
                         </div>
+
                         <FormSelect label="Estado" name="estado" required={true} value={formData.estado} onChange={handleChange} options={estadoOptions} />
                     </div>
                 </div>

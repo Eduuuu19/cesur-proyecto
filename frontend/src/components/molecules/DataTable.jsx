@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { FiEdit2, FiTrash2, FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import styles from './DataTable.module.css';
 
-export default function DataTable({ data = [], columns = [], onEdit, onDelete, itemsPerPage = 10 }) {
+export default function DataTable({ data = [], columns = [], onEdit, onDelete, onSort, currentSort, itemsPerPage = 10 }) {
 
-    {/* Lógica de paginación */}
+    {/* Lógica de paginación */ }
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(data.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const paginatedData = data.slice(startIndex, startIndex + itemsPerPage);
 
-    {/* Función auxiliar para pintar las "píldoras" de estado con sus colores */}
+    {/* Función auxiliar para pintar las "píldoras" de estado con sus colores */ }
     const renderStatus = (status) => {
         const statusLower = status.toLowerCase();
         let pillClass = styles.pillDefault;
@@ -32,13 +32,23 @@ export default function DataTable({ data = [], columns = [], onEdit, onDelete, i
                         </th>
 
                         {columns.map((col, index) => (
-                            <th key={index}>
+                            <th
+                                key={index}
+                                onClick={() => col.sortable && onSort && onSort(col.key)}
+                                className={col.sortable ? styles.sortableHeader : ''}
+                            >
                                 <div className={styles.thContent}>
                                     {col.label}
                                     {col.sortable && (
                                         <div className={styles.sortIcons}>
-                                            <FiChevronUp size={12} />
-                                            <FiChevronDown size={12} />
+                                            <FiChevronUp
+                                                size={12}
+                                                color={currentSort?.key === col.key && currentSort?.direction === 'asc' ? '#0f172a' : '#7e8a9b'}
+                                            />
+                                            <FiChevronDown
+                                                size={12}
+                                                color={currentSort?.key === col.key && currentSort?.direction === 'desc' ? '#0f172a' : '#7e8a9b'}
+                                            />
                                         </div>
                                     )}
                                 </div>
@@ -93,10 +103,10 @@ export default function DataTable({ data = [], columns = [], onEdit, onDelete, i
                     <span className={styles.paginationText}>
                         Mostrando <strong>{currentPage}</strong> de <strong>{totalPages}</strong>
                     </span>
-                    
+
                     <div className={styles.paginationButtons}>
-                        <button 
-                            className={styles.pageBtn} 
+                        <button
+                            className={styles.pageBtn}
                             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                             disabled={currentPage === 1}
                         >
@@ -113,8 +123,8 @@ export default function DataTable({ data = [], columns = [], onEdit, onDelete, i
                             </button>
                         ))}
 
-                        <button 
-                            className={styles.pageBtn} 
+                        <button
+                            className={styles.pageBtn}
                             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                             disabled={currentPage === totalPages}
                         >

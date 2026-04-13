@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import ProtectedRoute from './components/molecules/ProtectedRoute';
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage';
 import MainLayout from './components/layout/MainLayout'
@@ -6,7 +7,7 @@ import DashboardPage from './pages/DashboardPage'
 import FacturasEmitidasPage from './pages/FacturasEmitidasPage';
 import PresupuestosPage from './pages/PresupuestosPage';
 import FacturasRecibidasPage from './pages/FacturasRecibidasPage';
-import ClientesPage from './pages/ClientesPage'; 
+import ClientesPage from './pages/ClientesPage';
 import ProveedoresPage from './pages/ProveedoresPage';
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
 
         {/* RUTAS PRIVADAS*/}
-        <Route path="/" element={<MainLayout />}>
+        <Route path="/" element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
 
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<DashboardPage />} />
@@ -27,7 +28,7 @@ function App() {
           <Route path="/presupuestos" element={<PresupuestosPage />} />
           <Route path="/facturas-recibidas" element={<FacturasRecibidasPage />} />
           <Route path="/proveedores" element={<ProveedoresPage />} />
-
+          
         </Route>
       </Routes>
     </BrowserRouter>
