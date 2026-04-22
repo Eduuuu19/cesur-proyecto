@@ -158,7 +158,7 @@ export default function PresupuestosPage() {
               <FiSearch className={styles.searchIcon} />
               <input 
                 type="text" 
-                placeholder="Buscar por nombre..." 
+                placeholder="Buscar por nombre cliente..." 
                 className={styles.searchInput} 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}

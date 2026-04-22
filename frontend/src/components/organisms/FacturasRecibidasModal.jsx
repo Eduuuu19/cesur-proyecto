@@ -3,7 +3,7 @@ import { FiAlertCircle } from 'react-icons/fi';
 import GenericModal from '../atoms/GenericModal';
 import FormInput from '../molecules/FormInput';
 import FormSelect from '../molecules/FormSelect';
-import styles from './DocumentModal.module.css';
+import styles from './SharedModal.module.css';
 
 export default function FacturasRecibidasModal({ isOpen, onClose, onSave, proveedores, initialData }) {
 

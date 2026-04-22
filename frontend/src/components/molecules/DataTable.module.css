@@ -1,13 +1,16 @@
 .tableContainer {
   width: 100%;
+  max-width: 100%;
   overflow-x: auto;
   background: white;
   border-radius: 8px;
   border: 1px solid var(--color-gray-300);
+  -webkit-overflow-scrolling: touch;
 }
 
 .table {
   width: 100%;
+  min-width: 800px;
   border-collapse: collapse;
   text-align: left;
   font-size: 14px;
@@ -181,6 +184,26 @@
   border-color: var(--color-gray-300);
   font-weight: bold;
   color: var(--color-gray-800);
+}
+
+/* ------ RESPONSIVE ------ */
+@media (max-width: 768px) {
+  .paginationContainer {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .paginationButtons {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap; 
+  }
+
+  .pageBtn {
+    min-width: 40px; 
+    height: 40px;
+  }
 }
 
 

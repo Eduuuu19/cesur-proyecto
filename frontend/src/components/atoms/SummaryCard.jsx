@@ -41,7 +41,7 @@ export default function SummaryCard({
             type="month" 
             selectedDate={selectedDate} 
             onChange={onDateChange} 
-            fechasDisponibles={fechasDisponibles} // Ahora sí tendrá valor
+            fechasDisponibles={fechasDisponibles} 
           />
         </div>
 

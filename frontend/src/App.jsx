@@ -9,6 +9,8 @@ import PresupuestosPage from './pages/PresupuestosPage';
 import FacturasRecibidasPage from './pages/FacturasRecibidasPage';
 import ClientesPage from './pages/ClientesPage';
 import ProveedoresPage from './pages/ProveedoresPage';
+import AjustesPage from './pages/AjustesPage';
+import SoportePage from './pages/SoportePage';
 
 function App() {
   return (
@@ -28,7 +30,9 @@ function App() {
           <Route path="/presupuestos" element={<PresupuestosPage />} />
           <Route path="/facturas-recibidas" element={<FacturasRecibidasPage />} />
           <Route path="/proveedores" element={<ProveedoresPage />} />
-          
+          <Route path="/ajustes" element={<AjustesPage />} />
+          <Route path="/soporte" element={<SoportePage />} />
+
         </Route>
       </Routes>
     </BrowserRouter>

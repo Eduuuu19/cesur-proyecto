@@ -3,16 +3,14 @@
   height: 100vh;
   background-color: var(--color-primary-500);
   display: flex;
+  flex-shrink: 0;
   flex-direction: column;
   padding: 24px 16px;
   color: var(--color-gray-50);
   box-shadow: 5px 0 10px rgba(0, 0, 0, 0.3);
   transition: width 0.3s ease;
-  /* ESTA ES LA MAGIA: Animación de encogerse */
   overflow-x: hidden;
-  /* Evita que el texto salga por los lados mientras se anima */
   white-space: nowrap;
-  /* Evita que el texto se parta en dos líneas */
 }
 
 /* Modificador cuando está colapsada */
@@ -41,6 +39,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  cursor: pointer;
 }
 
 .logo {
@@ -175,4 +174,40 @@
   gap: 8px;
   border-top: 1px solid var(--color-primary-100);
   padding-top: 16px;
+}
+
+/* ------ RESPONSIVE ------ */
+/* Estilos para la capa oscura que oscurece el fondo */
+.overlay {
+  display: none; 
+}
+
+@media (max-width: 768px) {
+  /* Esconder la barra lateral fuera de la pantalla por defecto */
+  .sidebarContainer {
+    position: fixed;
+    top: 0;
+    left: -260px; 
+    z-index: 1000;
+    transition: left 0.3s ease;
+  }
+
+  .sidebarContainer.mobileOpen {
+    left: 0; 
+  }
+
+  .toggleBtn {
+    display: none;
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999; 
+  }
 }

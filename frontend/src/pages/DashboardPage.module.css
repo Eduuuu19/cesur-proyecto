@@ -13,9 +13,25 @@
 
 .cardsRow {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   width: 100%;
 }
 
-/* ##### RESPONSIVE ##### */
+/* ------ RESPONSIVE ------ */
+
+@media (max-width: 768px) {
+  .dashboardContainer {
+    gap: 16px; 
+  }
+
+  .pageTitle {
+    font-size: 20px; 
+    margin-bottom: 16px;
+  }
+
+  .cardsRow {
+    grid-template-columns: 1fr; 
+    gap: 16px; 
+  }
+}

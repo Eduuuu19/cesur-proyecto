@@ -174,3 +174,10 @@
 - **Arquitectura del Dashboard:** Descentralización del estado en `DashboardPage` para que cada tarjeta gestione sus propias peticiones HTTP de forma independiente.
 - **Integración de Gráficos:** Conexión de `recharts` con los endpoints de estadísticas, añadiendo formateo de euros y renderizado condicional de colores.
 - **Filtros Dinámicos de Fecha:** Implementación de calendarios personalizados (`DateSelector`) con bloqueo automático de meses vacíos basado en los datos del servidor.
+
+## [22-04-2026] - Refinamiento UX, Navegación Dinámica e Inicio de Fase Responsive
+- **Mejora de experiencia de Usuario en Ajustes**: Refactorización de las notificaciones de éxito/error para mostrarse en línea junto a los botones de guardado.
+- **Nueva Pantalla de Soporte:** Diseño layout a dos columnas. Implementación de un acordeón animado para las Preguntas Frecuentes (FAQs), y un formulario de creación de tickets.
+- **Topbar Interactiva (Buscador y Perfil):** Transformación de la barra superior estática en un hub de navegación. Creación de un buscador inteligente con autocompletado para viajar entre secciones, y desarrollo de un menú de usuario flotante dinámico.
+- **Mejoras de Navegación Menores:** Activación del logo principal en el Sidebar como atajo rápido para regresar al Dashboard.
+- **Arquitectura Responsive:** Adaptación móvil completa de todas las pantallas de la aplicación. Se ha garantizado una visualización perfecta, fluida y sin roturas de diseño abarcando todos los dispositivos hasta resoluciones mínimas de 320px de ancho.

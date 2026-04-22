@@ -1,6 +1,10 @@
 .pageContainer {
   padding: 12px;
   min-height: 100vh;
+  width: 100%;
+  min-width: 0%;
+  overflow-x: hidden; 
+  box-sizing: border-box;
 }
 
 .breadcrumbs {
@@ -19,7 +23,9 @@
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  box-sizing: border-box;
   padding: 24px;
+  min-width: 0%;
 }
 
 .toolbar {
@@ -113,4 +119,46 @@
   color: #64748b;
   font-weight: 500;
   font-style: italic;
+}
+
+/* ------ RESPONSIVE ------ */
+
+@media (max-width: 900px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btnAdd {
+    justify-content: center; 
+  }
+
+  .filters {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .searchBox {
+    min-width: 0; 
+    width: 100%;
+  }
+
+  .selectBox, .statusSelect {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    padding: 16px 8px; 
+  }
+
+  .contentCard {
+    padding: 16px; 
+  }
+
+  .title {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
 }

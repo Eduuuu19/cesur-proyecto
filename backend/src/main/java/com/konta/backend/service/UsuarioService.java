@@ -24,15 +24,28 @@ public class UsuarioService {
     }
 
     public Usuario actualizarPerfil(Usuario datosNuevos) {
-        Usuario usuarioActual = getPerfilActual();
+        Usuario usuario = getPerfilActual();
 
-        usuarioActual.setNombreUsuario(datosNuevos.getNombreUsuario());
-        usuarioActual.setTelefono(datosNuevos.getTelefono());
+        usuario.setTelefono(datosNuevos.getTelefono());
+        String fotoRecibida = datosNuevos.getFotoPerfil();
 
-        if (datosNuevos.getPassword() != null && !datosNuevos.getPassword().trim().isEmpty()) {
-            usuarioActual.setPassword(passwordEncoder.encode(datosNuevos.getPassword()));
+        if (fotoRecibida != null && fotoRecibida.trim().isEmpty()) {
+            usuario.setFotoPerfil(null);
+        } else if (fotoRecibida != null) {
+            usuario.setFotoPerfil(fotoRecibida);
         }
 
-        return usuarioRepository.save(usuarioActual);
+        return usuarioRepository.save(usuario);
+    }
+
+    public void actualizarPassword(String currentPassword, String newPassword){
+        Usuario usuario = getPerfilActual();
+
+        if (!passwordEncoder.matches(currentPassword, usuario.getPassword())) {
+            throw new IllegalArgumentException("La contraseña actual es incorrecta.");
+        }
+
+        usuario.setPassword(passwordEncoder.encode(newPassword));
+        usuarioRepository.save(usuario);
     }
 }

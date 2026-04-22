@@ -19,3 +19,19 @@
 .hiddenInput {
   display: none;
 }
+
+/* ------ RESPONSIVE ------ */
+@media (max-width: 1024px) {
+  .selectorWrapper {
+    font-size: 11px;
+    gap: 4px; 
+    padding: 2px 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .selectorWrapper {
+    font-size: 13px;
+    gap: 6px;
+  }
+}

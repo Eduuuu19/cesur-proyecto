@@ -145,3 +145,33 @@
   font-size: 14px;
   text-align: center;
 }
+
+/* ------ RESPONSIVE ------ */
+@media (max-width: 768px) {
+  .backgroundWrapper {
+    padding: 16px;
+  }
+
+  .loginCard {
+    padding: 24px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .appTitle {
+    font-size: 22px;
+  }
+
+  .welcomeText {
+    font-size: 18px;
+    margin-top: 16px;
+  }
+
+  .subtitle {
+    margin-bottom: 24px;
+  }
+
+  .formContainer {
+    gap: 12px;
+  }
+}

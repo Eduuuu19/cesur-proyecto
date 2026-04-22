@@ -12,7 +12,7 @@
   text-align: center;
   font-size: 14px;
   font-weight: 600;
-  border-top-left-radius: 12px; 
+  border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 }
 
@@ -20,7 +20,7 @@
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
-  gap: 32px; 
+  gap: 32px;
 }
 
 /* --- Leyenda y Año --- */
@@ -50,14 +50,14 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: var(--color-primary-400); 
+  background-color: var(--color-primary-400);
 }
 
 .dotExpense {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: var(--color-danger-300); 
+  background-color: var(--color-danger-300);
 }
 
 .menuIcon {
@@ -70,24 +70,55 @@
 
 /* --- Gráfico --- */
 .chartWrapper {
-  height: 350px; 
+  height: 350px;
   width: 100%;
   margin-top: 16px;
 }
 
-/* ##### RESPONSIVE ##### */
-@media (max-width: 768px) {
-  .controlsRow {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
+/* ------ RESPONSIVE ------ */
+@media (max-width: 1024px) {
+  .legendItem {
+    font-size: 12px;
+    gap: 4px;
   }
 
+  .dotIncome,
+  .dotExpense {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chartBody {
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .controlsRow {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .legendGroup {
+    flex: 1 1 100%;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+
+  .legendItem {
+    gap: 8px;
+    font-size: 14px;
+  }
+
+
   .menuIcon {
-    justify-content: flex-start;
+    flex: 0 0 auto;
   }
 
   .chartWrapper {
-    height: 250px;
+    height: 300px;
+    margin-top: 0;
   }
 }

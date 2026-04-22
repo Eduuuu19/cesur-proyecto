@@ -1,5 +1,5 @@
-import React from 'react';
-import { FiX } from 'react-icons/fi';
+import React, { useState, useEffect } from 'react';
+import { FiX, FiSave } from 'react-icons/fi';
 import styles from './GenericModal.module.css';
 
 
@@ -38,13 +38,16 @@ export default function GenericModal({
         {/* FOOTER */}
         <div className={styles.modalFooter}>
           <button className={styles.btnCancel} onClick={actionSecondaryOnclick || onClose}>
+            <FiX size={16} />
             {actionSecondaryLabel}
           </button>
+          
           <button 
             className={styles.btnSave} 
             onClick={actionPrimaryOnclick}
             disabled={isActionPrimaryDisabled}
           >
+            <FiSave size={16} />
             {actionPrimaryLabel}
           </button>
         </div>

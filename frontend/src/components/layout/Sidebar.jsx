@@ -15,7 +15,7 @@ import {
 import styles from './Sidebar.module.css';
 import logo from '../../assets/logo.png';
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }) {
   // ESTADOS PARA CONTROLAR LOS ACORDEONES
   const [isMaestrosOpen, setIsMaestrosOpen] = useState(false);
   const [isIngresosOpen, setIsIngresosOpen] = useState(false);
@@ -55,10 +55,10 @@ export default function Sidebar() {
 
   // función para cerrar sesión
   const handleLogout = (e) => {
-    e.preventDefault(); // Evitamos que el link recargue la página por defecto
-    localStorage.removeItem('konta_token'); // Vaciamos bolsillo principal
-    sessionStorage.removeItem('konta_token'); // Vaciamos bolsillo temporal
-    navigate('/login'); // Expulsamos al usuario al login
+    e.preventDefault();
+    localStorage.removeItem('konta_token');
+    sessionStorage.removeItem('konta_token');
+    navigate('/login');
   };
 
   // FÓRMULAS DE ESTILO
@@ -69,83 +69,88 @@ export default function Sidebar() {
     isActive ? `${styles.subNavLink} ${styles.activeLink}` : styles.subNavLink;
 
   return (
-    <aside className={`${styles.sidebarContainer} ${isCollapsed ? styles.collapsed : ''}`}>
+    <>
+      {/* capa oscura para móviles */}
+      {isOpen && <div className={styles.overlay} onClick={onClose}></div>}
 
-      <div className={styles.logoContainer}>
+      <aside className={`${styles.sidebarContainer} ${isCollapsed ? styles.collapsed : ''} ${isOpen ? styles.mobileOpen : ''}`}>
 
-        <div className={styles.logoWrapper}>
-          <img src={logo} alt="Konta Logo" className={styles.logo} />
-          {!isCollapsed && <span className={styles.logoText}>Konta</span>}
+        <div className={styles.logoContainer}>
+
+          <div className={styles.logoWrapper} onClick={() => navigate('/dashboard')}>
+            <img src={logo} alt="Konta Logo" className={styles.logo} />
+            {!isCollapsed && <span className={styles.logoText}>Konta</span>}
+          </div>
+
+          <button className={styles.toggleBtn} onClick={handleToggleSidebar}>
+            <FiMenu size={24} />
+          </button>
+
         </div>
 
-        <button className={styles.toggleBtn} onClick={handleToggleSidebar}>
-          <FiMenu size={24} />
-        </button>
+        <nav className={styles.navMenu}>
+          <NavLink to="/dashboard" className={navLinkClass}>
+            <FiPieChart size={20} className={styles.icon} />
+            {!isCollapsed && <span>Panel de Control</span>}
+          </NavLink>
 
-      </div>
+          {/* --- ACORDEÓN: MAESTROS --- */}
+          <button className={`${styles.navButton} ${styles.navLink}`} onClick={handleMaestrosClick}>
+            <div className={styles.navButtonLeft}>
+              <FiDatabase size={20} className={styles.icon} />
+              {!isCollapsed && <span>Maestros</span>}
+            </div>
+            {!isCollapsed && (isMaestrosOpen ? <FiChevronUp size={18} /> : <FiChevronDown size={18} />)}
+          </button>
 
-      <nav className={styles.navMenu}>
-        <NavLink to="/dashboard" className={navLinkClass}>
-          <FiPieChart size={20} className={styles.icon} />
-          {!isCollapsed && <span>Panel de Control</span>}
-        </NavLink>
+          {!isCollapsed && isMaestrosOpen && (
+            <div className={styles.subMenu}>
+              <NavLink to="/clientes" className={subNavLinkClass}>Clientes</NavLink>
+              <NavLink to="/proveedores" className={subNavLinkClass}>Proveedores</NavLink>
+            </div>
+          )}
 
-        {/* --- ACORDEÓN: MAESTROS --- */}
-        <button className={`${styles.navButton} ${styles.navLink}`} onClick={handleMaestrosClick}>
-          <div className={styles.navButtonLeft}>
-            <FiDatabase size={20} className={styles.icon} />
-            {!isCollapsed && <span>Maestros</span>}
-          </div>
-          {!isCollapsed && (isMaestrosOpen ? <FiChevronUp size={18} /> : <FiChevronDown size={18} />)}
-        </button>
+          {/* --- ACORDEÓN: INGRESOS --- */}
+          <button className={`${styles.navButton} ${styles.navLink}`} onClick={handleIngresosClick}>
+            <div className={styles.navButtonLeft}>
+              <FiTrendingUp size={20} className={styles.icon} />
+              {!isCollapsed && <span>Ingresos</span>}
+            </div>
+            {!isCollapsed && (isIngresosOpen ? <FiChevronUp size={18} /> : <FiChevronDown size={18} />)}
+          </button>
 
-        {!isCollapsed && isMaestrosOpen && (
-          <div className={styles.subMenu}>
-            <NavLink to="/clientes" className={subNavLinkClass}>Clientes</NavLink>
-            <NavLink to="/proveedores" className={subNavLinkClass}>Proveedores</NavLink>
-          </div>
-        )}
+          {!isCollapsed && isIngresosOpen && (
+            <div className={styles.subMenu}>
+              <NavLink to="/presupuestos" className={subNavLinkClass}>Presupuestos</NavLink>
+              <NavLink to="/facturas-emitidas" className={subNavLinkClass}>Facturas Emitidas</NavLink>
+            </div>
+          )}
 
-        {/* --- ACORDEÓN: INGRESOS --- */}
-        <button className={`${styles.navButton} ${styles.navLink}`} onClick={handleIngresosClick}>
-          <div className={styles.navButtonLeft}>
-            <FiTrendingUp size={20} className={styles.icon} />
-            {!isCollapsed && <span>Ingresos</span>}
-          </div>
-          {!isCollapsed && (isIngresosOpen ? <FiChevronUp size={18} /> : <FiChevronDown size={18} />)}
-        </button>
+          {/* --- RESTO DE ENLACES --- */}
+          <NavLink to="/facturas-recibidas" className={navLinkClass}>
+            <FiTrendingDown size={20} className={styles.icon} />
+            {!isCollapsed && <span>Gastos</span>}
+          </NavLink>
 
-        {!isCollapsed && isIngresosOpen && (
-          <div className={styles.subMenu}>
-            <NavLink to="/presupuestos" className={subNavLinkClass}>Presupuestos</NavLink>
-            <NavLink to="/facturas-emitidas" className={subNavLinkClass}>Facturas Emitidas</NavLink>
-          </div>
-        )}
+          <NavLink to="/soporte" className={navLinkClass}>
+            <FiHeadphones size={20} className={styles.icon} />
+            {!isCollapsed && <span>Soporte</span>}
+          </NavLink>
+        </nav>
 
-        {/* --- RESTO DE ENLACES --- */}
-        <NavLink to="/facturas-recibidas" className={navLinkClass}>
-          <FiTrendingDown size={20} className={styles.icon} />
-          {!isCollapsed && <span>Gastos</span>}
-        </NavLink>
+        <div className={styles.bottomMenu}>
+          <NavLink to="/ajustes" className={navLinkClass}>
+            <FiSettings size={20} className={styles.icon} />
+            {!isCollapsed && <span>Ajustes</span>}
+          </NavLink>
 
-        <NavLink to="/soporte" className={navLinkClass}>
-          <FiHeadphones size={20} className={styles.icon} />
-          {!isCollapsed && <span>Soporte</span>}
-        </NavLink>
-      </nav>
+          <Link to="/login" className={styles.navLink} onClick={handleLogout}>
+            <FiLogOut size={20} className={styles.icon} />
+            {!isCollapsed && <span>Cerrar Sesión</span>}
+          </Link>
+        </div>
 
-      <div className={styles.bottomMenu}>
-        <NavLink to="/ajustes" className={navLinkClass}>
-          <FiSettings size={20} className={styles.icon} />
-          {!isCollapsed && <span>Ajustes</span>}
-        </NavLink>
-
-        <Link to="/login" className={styles.navLink} onClick={handleLogout}>
-          <FiLogOut size={20} className={styles.icon} />
-          {!isCollapsed && <span>Cerrar Sesión</span>}
-        </Link>
-      </div>
-
-    </aside>
+      </aside>
+    </>
   );
 }

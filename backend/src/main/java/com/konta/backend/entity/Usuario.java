@@ -39,6 +39,10 @@ public class Usuario {
     @Column(nullable = false)
     private String estado = "Activo"; // Por defecto, todos nacen activos
 
+    @Lob
+    @Column(name = "foto_perfil", columnDefinition = "LONGTEXT")
+    private String fotoPerfil;
+
     public Usuario() {
     }
 
@@ -114,4 +118,8 @@ public class Usuario {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    public String getFotoPerfil() {return fotoPerfil;}
+
+    public void setFotoPerfil(String fotoPerfil) {this.fotoPerfil = fotoPerfil;}
 }

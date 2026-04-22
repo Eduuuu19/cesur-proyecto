@@ -96,3 +96,25 @@
   border-color: var(--color-primary-500); 
   background-color: white;
 }
+
+/* ------ RESPONSIVE ------ */
+@media (max-width: 768px) {
+  .grid2 {
+    grid-template-columns: 1fr; 
+    gap: 16px;
+  }
+
+  .section {
+    gap: 12px;
+  }
+
+  .formStack {
+    gap: 16px;
+  }
+
+  .totalWrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

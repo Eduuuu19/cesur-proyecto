@@ -10,6 +10,13 @@
 }
 
 /* --- BUSCADOR --- */
+
+.searchWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px; 
+}
+
 .searchContainer {
   display: flex;
   align-items: center;
@@ -60,23 +67,227 @@
   color: var(--color-gray-700);
 }
 
+/* --- MENÚ DESPLEGABLE DE BÚSQUEDA --- */
+.dropdownMenu {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-gray-200, #e5e7eb);
+  overflow: hidden;
+  z-index: 1000; 
+  animation: dropIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid var(--color-gray-100, #f3f4f6);
+}
+
+.dropdownItem:last-child {
+  border-bottom: none;
+}
+
+.dropdownItem:hover {
+  background-color: var(--color-gray-50, #f9fafb);
+}
+
+.itemIcon {
+  color: var(--color-gray-400, #9ca3af);
+  display: flex;
+  align-items: center;
+}
+
+.dropdownItem:hover .itemIcon {
+  color: var(--color-primary-500, #2563eb); 
+}
+
+.itemName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-gray-800, #1f2937);
+}
+
+.noResults {
+  padding: 16px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-gray-500, #6b7280);
+}
+
 /* --- PERFIL --- */
+.profileWrapper {
+  position: relative;
+}
+
 .profileContainer {
   display: flex;
   align-items: center;
   gap: 12px;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.profileContainer:hover {
+  background-color: var(--color-gray-50);
+}
+
+.userDropdown {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  width: 220px;
+  background-color: #ffffff; 
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); 
+  border: 1px solid var(--color-gray-200, #e5e7eb);
+  z-index: 9999;
+  overflow: hidden;
+  animation: slideInTop 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInTop {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdownHeader {
+  padding: 16px;
+}
+
+.userEmail {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin: 0;
+}
+
+.userRole {
+  font-size: 12px;
+  color: var(--color-primary-600);
+  margin: 2px 0 0 0;
+}
+
+.dropdownDivider {
+  height: 1px;
+  background-color: var(--color-gray-100);
+  margin: 4px 0;
+}
+
+.dropdownAction {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-gray-700);
+  transition: all 0.2s;
+}
+
+.dropdownAction:hover {
+  background-color: var(--color-gray-50);
+  color: var(--color-primary-600);
+}
+
+.logoutAction {
+  color: var(--color-danger-500);
+}
+
+.logoutAction:hover {
+  background-color: #fff1f2; 
+  color: var(--color-danger-600);
+}
+
+.avatarMain {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--color-primary-100, #dbeafe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-primary-200, #bfdbfe);
+  flex-shrink: 0;
 }
 
 .avatar {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
   object-fit: cover; 
+}
+
+.avatarInitials {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-primary-600);
 }
 
 .userName {
   font-size: 14px;
   font-weight: 600;
   color: var(--color-gray-800);
+}
+
+/* ------ RESPONSIVE ------ */
+.mobileMenuBtn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--color-gray-700);
+  cursor: pointer;
+  padding: 4px;
+}
+
+@media (max-width: 768px) {
+  .topbarContainer {
+    padding: 0 16px; 
+    gap: 12px;
+  }
+
+  .mobileMenuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .searchWrapper {
+    flex: 1; 
+  }
+
+  .searchContainer {
+    width: 100%; 
+    padding: 8px 12px;
+  }
+
+  .userName {
+    display: none;
+  }
+  
+  .userDropdown {
+    right: -16px; 
+  }
 }

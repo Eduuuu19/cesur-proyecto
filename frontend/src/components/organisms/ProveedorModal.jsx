@@ -5,7 +5,7 @@ import FormInput from '../molecules/FormInput';
 import FormSelect from '../molecules/FormSelect';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import styles from './DocumentModal.module.css';
+import styles from './SharedModal.module.css';
 
 export default function ProveedorModal({ isOpen, onClose, onSave, initialData }) {    
     

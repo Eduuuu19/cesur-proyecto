@@ -52,3 +52,35 @@
   display: flex;
   justify-content: center; 
 }
+
+/* ------ RESPONSIVE ------ */
+@media (max-width: 1024px) {
+  .cardBody {
+    padding: 16px 8px;
+    gap: 12px;
+  }
+  
+  .amount {
+    font-size: 20px; 
+  }
+
+  .cardHeader {
+    font-size: 12px;
+    padding: 10px 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cardBody {
+    padding: 20px 16px;
+    gap: 12px;
+  }
+
+  .amount {
+    font-size: 24px; 
+  }
+  
+  .miniChartWrapper {
+    height: 50px; 
+  }
+}
