@@ -1,11 +1,10 @@
 package com.konta.backend.controller;
 
-import com.konta.backend.entity.Usuario;
 import com.konta.backend.service.AdminService;
+import com.konta.backend.service.SistemaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -13,33 +12,52 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
-
-    // --- GESTIÓN DE USUARIOS ---
+    @Autowired
+    private SistemaService sistemaService;
 
     @GetMapping("/users")
-    public List<Usuario> getAllUsers() {
-        return adminService.obtenerTodosLosUsuarios();
+    public ResponseEntity<?> listarUsuarios() {
+        return ResponseEntity.ok(adminService.obtenerTodosLosUsuarios());
     }
 
-    @PutMapping("/users/{idUsuario}/estado")
-    public Usuario updateEstadoUsuario(@PathVariable Long idUsuario, @RequestParam String estado) {
-        return adminService.cambiarEstadoUsuario(idUsuario, estado);
+    @PutMapping("/users/{id}/toggle-status")
+    public ResponseEntity<?> cambiarEstadoUsuario(@PathVariable Long id){
+        try{
+            String resultado = adminService.cambiarEstadoUsuario(id);
+            return ResponseEntity.ok(resultado);
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    @DeleteMapping("/users/{idUsuario}")
-    public void deleteUser(@PathVariable Long idUsuario) {
-        adminService.eliminarUsuario(idUsuario);
+    @GetMapping("/tickets")
+    public ResponseEntity<?> listarTickets() {
+        return ResponseEntity.ok(adminService.obtenerTodosLosTickets());
     }
 
-    // --- PARÁMETROS GLOBALES Y MANTENIMIENTO ---
-
-    @GetMapping("/mantenimiento")
-    public boolean getEstadoMantenimiento() {
-        return adminService.isModoMantenimiento();
+    @PutMapping("/tickets/{id}/resolve")
+    public ResponseEntity<?> resolverTicket(@PathVariable Long id) {
+        try {
+            String resultado = adminService.resolverTicket(id);
+            return ResponseEntity.ok(resultado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    @PostMapping("/mantenimiento/toggle")
-    public String toggleMantenimiento() {
-        return adminService.toggleModoMantenimiento();
+    @GetMapping("/system/maintenance/status")
+    public ResponseEntity<?> verEstadoMantenimiento() {
+        return ResponseEntity.ok("Modo Mantenimiento: " + (sistemaService.isModoMantenimiento() ? "ON" : "OFF"));
+    }
+
+    @PutMapping("/system/maintenance/toggle")
+    public ResponseEntity<?> cambiarModoMantenimiento() {
+        String nuevoEstado = sistemaService.toggleMantenimiento();
+        return ResponseEntity.ok("El Modo Mantenimiento ahora está: " + nuevoEstado);
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<?> obtenerEstadisticasKpi() {
+        return ResponseEntity.ok(adminService.obtenerEstadisticas());
     }
 }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { FiEdit2, FiTrash2, FiChevronUp, FiChevronDown } from 'react-icons/fi';
+import { FiEdit2, FiTrash2, FiChevronUp, FiChevronDown, FiLock, FiUnlock, FiEye, FiCheck } from 'react-icons/fi';
 import styles from './DataTable.module.css';
 
-export default function DataTable({ data = [], columns = [], onEdit, onDelete, onSort, currentSort, itemsPerPage = 10 }) {
+export default function DataTable({ data = [], columns = [], onEdit, onDelete, onToggleStatus, onSort, onView, onResolve, currentSort, itemsPerPage = 10 }) {
 
     {/* Lógica de paginación */ }
     const [currentPage, setCurrentPage] = useState(1);
@@ -15,9 +15,9 @@ export default function DataTable({ data = [], columns = [], onEdit, onDelete, o
         const statusLower = status.toLowerCase();
         let pillClass = styles.pillDefault;
 
-        if (['pagada', 'aceptado'].includes(statusLower)) pillClass = styles.pillSuccess;
+        if (['pagada', 'aceptado', 'activo'].includes(statusLower)) pillClass = styles.pillSuccess;
         if (['pendiente'].includes(statusLower)) pillClass = styles.pillWarning;
-        if (['vencida', 'rechazado'].includes(statusLower)) pillClass = styles.pillDanger;
+        if (['vencida', 'rechazado', 'bloqueado'].includes(statusLower)) pillClass = styles.pillDanger;
 
         return <span className={`${styles.pill} ${pillClass}`}>{status}</span>;
     };
@@ -77,12 +77,36 @@ export default function DataTable({ data = [], columns = [], onEdit, onDelete, o
                             ))}
 
                             <td className={styles.actionsCell}>
-                                <button className={styles.actionBtn} onClick={() => onEdit && onEdit(row)}>
-                                    <FiEdit2 size={16} />
-                                </button>
-                                <button className={`${styles.actionBtn} ${styles.deleteBtn}`} onClick={() => onDelete && onDelete(row)}>
-                                    <FiTrash2 size={16} />
-                                </button>
+                                {onEdit && (
+                                    <button className={styles.actionBtn} onClick={() => onEdit(row)}>
+                                        <FiEdit2 size={16} />
+                                    </button>
+                                )}
+                                {onDelete && (
+                                    <button className={`${styles.actionBtn} ${styles.deleteBtn}`} onClick={() => onDelete(row)}>
+                                        <FiTrash2 size={16} />
+                                    </button>
+                                )}
+                                {onToggleStatus && (
+                                    <button
+                                        className={`${styles.actionBtn} ${row.estado === 'Bloqueado' ? styles.activateBtn : styles.blockBtn}`}
+                                        onClick={() => onToggleStatus(row)}
+                                        title={row.estado === 'Bloqueado' ? 'Activar Usuario' : 'Bloquear Usuario'}
+                                    >
+                                        {row.estado === 'Bloqueado' ? <FiUnlock size={16} /> : <FiLock size={16} />}
+                                    </button>
+                                )}
+                                {onView && (
+                                    <button className={styles.actionBtn} onClick={() => onView(row)} title="Ver Mensaje">
+                                        <FiEye size={16} />
+                                    </button>
+                                )}
+
+                                {onResolve && row.estado !== 'RESUELTO' && (
+                                    <button className={`${styles.actionBtn} ${styles.activateBtn}`} onClick={() => onResolve(row)} title="Marcar como Resuelto">
+                                        <FiCheck size={16} />
+                                    </button>
+                                )}
                             </td>
                         </tr>
                     ))}

@@ -252,6 +252,55 @@
   color: var(--color-gray-800);
 }
 
+/* --- BOTÓN DE MANTENIMIENTO ADMIN --- */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.maintenanceBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.maintenanceInactive {
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  color: #64748b;
+}
+
+.maintenanceActive {
+  border: 1px solid #fca5a5;
+  background-color: #fef2f2;
+  color: #ef4444;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.dotInactive {
+  background-color: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.dotActive {
+  background-color: #ef4444;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+}
+
 /* ------ RESPONSIVE ------ */
 .mobileMenuBtn {
   display: none;

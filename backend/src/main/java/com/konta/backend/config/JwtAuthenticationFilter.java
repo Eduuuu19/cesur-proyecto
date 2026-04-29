@@ -3,6 +3,7 @@ package com.konta.backend.config;
 import com.konta.backend.entity.Usuario;
 import com.konta.backend.repository.UsuarioRepository;
 import com.konta.backend.service.JwtService;
+import com.konta.backend.service.SistemaService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,9 +28,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private SistemaService sistemaService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        if (sistemaService.isModoMantenimiento()) {
+            String path = request.getServletPath();
+
+            if (!path.contains("/auth") && !path.contains("/admin")) {
+                response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                response.setContentType("text/plain;charset=UTF-8");
+                response.getWriter().write("El sistema se encuentra en Modo Mantenimiento. Vuelve más tarde.");
+                return;
+            }
+        }
 
         if (request.getServletPath().contains("/auth")) {
             filterChain.doFilter(request, response);

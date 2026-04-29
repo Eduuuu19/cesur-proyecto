@@ -27,13 +27,20 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> iniciarSesion(@Valid @RequestBody LoginUsuarioDTO dto) {
+    public ResponseEntity<?> iniciarSesion(@Valid @RequestBody LoginUsuarioDTO dto) {
+        try {
+            String token = authService.autenticarUsuario(dto);
 
-        String token = authService.autenticarUsuario(dto);
+            java.util.Map<String, String> respuesta = new java.util.HashMap<>();
+            respuesta.put("token", token);
 
-        java.util.Map<String, String> respuesta = new java.util.HashMap<>();
-        respuesta.put("token", token);
+            return ResponseEntity.ok(respuesta);
 
-        return ResponseEntity.ok(respuesta);
+        } catch (RuntimeException e) {
+            java.util.Map<String, String> errorRespuesta = new java.util.HashMap<>();
+            errorRespuesta.put("error", e.getMessage());
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorRespuesta);
+        }
     }
 }

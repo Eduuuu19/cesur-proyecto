@@ -27,7 +27,7 @@ public class ProveedorService {
 
     public List<Proveedor> getProveedores() {
         Usuario usuario = getUsuarioAutenticado();
-        return proveedorRepository.findAll();
+        return proveedorRepository.findByUsuario(usuario);
     }
 
     public Proveedor addProveedor(Proveedor proveedor) {

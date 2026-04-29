@@ -186,6 +186,17 @@
   color: var(--color-gray-800);
 }
 
+/* botones de estado para la tabla de usuarios de la vista de administrador */
+.blockBtn:hover {
+    color: #ef4444; 
+    background-color: #fef2f2;
+}
+
+.activateBtn:hover {
+    color: #10b981; 
+    background-color: #ecfdf5;
+}
+
 /* ------ RESPONSIVE ------ */
 @media (max-width: 768px) {
   .paginationContainer {

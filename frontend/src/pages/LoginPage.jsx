@@ -16,7 +16,7 @@ export default function LoginPage() {
   // Estados para manejar el feedback visual
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -24,49 +24,53 @@ export default function LoginPage() {
     setErrorMessage('');
 
     if (!email.trim() || !password.trim()) {
-        return setErrorMessage('Por favor, rellena todos los campos.');
+      return setErrorMessage('Por favor, rellena todos los campos.');
     }
 
     const payload = {
-        email: email,
-        password: password,
-        recordarCredenciales: rememberMe
+      email: email,
+      password: password,
+      recordarCredenciales: rememberMe
     };
 
     try {
-        setIsLoading(true);
-        
-        const response = await api.post('/auth/login', payload);
-        const token = response.data.token;
+      setIsLoading(true);
 
-        // Guardamr el token en el almacenamiento adecuado según la opción de "Recordar por 30 días"
-        if (rememberMe) {
-            localStorage.setItem('konta_token', token);
-        } else {
-            sessionStorage.setItem('konta_token', token);
+      const response = await api.post('/auth/login', payload);
+      const token = response.data.token;
+
+      // Guardar el token en el almacenamiento adecuado
+      if (rememberMe) {
+        localStorage.setItem('konta_token', token);
+      } else {
+        sessionStorage.setItem('konta_token', token);
+      }
+
+      const payloadBase64 = token.split('.')[1];
+      const decodedPayload = JSON.parse(atob(payloadBase64));
+
+      if (decodedPayload.rol === 'ADMIN') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
+    }
+    catch (error) {
+      console.error(error);
+      // Captura de errores
+      if (error.response) {
+        if (error.response.status === 401 && error.response.data && error.response.data.error) {
+          setErrorMessage(error.response.data.error);
         }
-
-        navigate('/');
-
-    } catch (error) {
-        console.error(error);
-        // Captura de errores
-        if (error.response) {
-            // Si es un error de cliente (400, 401, 403, 404), asumimos que son credenciales incorrectas
-            if (error.response.status >= 400 && error.response.status < 500) {
-                setErrorMessage('Correo electrónico o contraseña incorrectos.');
-            } else {
-                // Si es un error 500, es que el código Java ha petado
-                setErrorMessage(`Error interno del servidor (${error.response.status}).`);
-            }
-        } else if (error.request) {
-            setErrorMessage('No se pudo conectar con el servidor.');
-        } 
+        else if (error.response.status >= 400 && error.response.status < 500) {
+          setErrorMessage('Correo electrónico o contraseña incorrectos.');
+        }
         else {
-            setErrorMessage('Error inesperado en la aplicación.');
+          setErrorMessage(`Error interno del servidor (${error.response.status}).`);
         }
+      }
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -75,20 +79,20 @@ export default function LoginPage() {
       <div className={styles.overlay}></div>
 
       <div className={styles.loginCard}>
-        
+
         <div className={styles.headerContainer}>
           <img src={logo} alt="Logo de Konta" className={styles.logo} />
           <h1 className={styles.appTitle}>Konta</h1>
         </div>
-        
+
         <h2 className={styles.welcomeText}>Bienvenido de nuevo</h2>
         <p className={styles.subtitle}>Inicia sesión en tu cuenta</p>
 
         {errorMessage && <div className={styles.alertError}>{errorMessage}</div>}
 
         <form className={styles.formContainer} onSubmit={handleSubmit}>
-          
-          <InputField 
+
+          <InputField
             label="Correo electrónico"
             type="email"
             placeholder="ejemplo@correo.com"
@@ -97,7 +101,7 @@ export default function LoginPage() {
             onClear={() => setEmail('')}
           />
 
-          <InputField 
+          <InputField
             label="Contraseña"
             type="password"
             placeholder=""
@@ -116,12 +120,12 @@ export default function LoginPage() {
             </a>
           </div>
 
-          <Button 
-            text={isLoading ? "Verificando..." : "Iniciar Sesión"} 
-            type="submit" 
+          <Button
+            text={isLoading ? "Verificando..." : "Iniciar Sesión"}
+            type="submit"
             disabled={isLoading}
           />
-                    
+
         </form>
 
         <div className={styles.footerContainer}>

@@ -102,7 +102,7 @@ export default function DashboardPage() {
 
         <SummaryCard
           title="Beneficios"
-          amount={`${datosBeneficios.total > 0 ? '+' : '-'} ${datosBeneficios.total.toLocaleString('es-ES', { minimumFractionDigits: 2 })}€`}
+          amount={`${datosBeneficios.total >= 0 ? '+' : '-'} ${Math.abs(datosBeneficios.total).toLocaleString('es-ES', { minimumFractionDigits: 2 })}€`}
           variant={datosBeneficios.total >= 0 ? "success" : "danger"}
           chartType="bar"
           data={datosBeneficios.chart}

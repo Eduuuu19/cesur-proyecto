@@ -51,6 +51,10 @@ public class AuthService {
         Usuario usuario = usuarioRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Email o contraseña incorrectos"));
 
+        if ("Bloqueado".equals(usuario.getEstado())) {
+            throw new RuntimeException("Tu cuenta ha sido suspendida. Por favor, contacta con el administrador.");
+        }
+
         boolean contrasenaCorrecta = passwordEncoder.matches(dto.getPassword(), usuario.getPassword());
 
         if (!contrasenaCorrecta) {
