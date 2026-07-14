@@ -4,9 +4,9 @@ Bienvenido/a al repositorio oficial de **Konta**, un proyecto desarrollado como 
 
 Konta es una aplicación web (SaaS) diseñada para facilitar la contabilidad y la gestión diaria de autónomos y pequeñas empresas. Permite llevar un control exhaustivo del ciclo de ingresos y gastos de forma centralizada y segura.
 
-## Tecnologías Utilizadas.
-
 El proyecto sigue una arquitectura separada (Frontend y Backend) comunicada mediante una API RESTful.
+
+## Tecnologías Utilizadas.
 
 **Backend (Servidor y API):**
 * Java 17
